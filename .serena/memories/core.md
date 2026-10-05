@@ -1,0 +1,5 @@
+Project: Cloud CRM MCP in folder MCP Plugin 2. Installable package remains candidate-search 0.1.0-beta.2. Linear tracker https://linear.app/activi/project/lena-1333951b31fb holds ACT-140 through ACT-154 and is separate from the older Candidate Search project. The tracker title Lena was rejected on 5 October 2026; do not use it as the product name and do not invent a replacement. See docs/project.md and docs/memory.md.
+
+candidate-search/ is the installable plugin and skill. worker-source/ is a downloaded Worker snapshot, not a proven canonical release (ACT-143). server/ holds the local Inspector workspace and server/SPEC.md; it is not the deployed Worker and has no application TypeScript source.
+
+The next build is a new server beside the live Worker. CRM data still comes only from https://crm-pipedrive-worker.6f484zn9bd.workers.dev/mcp until that switch. Do not use crm-suche, Neon, Supabase, or local stdio crm-mysql. Codex server name crm-remote reads CRM_REMOTE_MCP_TOKEN. The plugin manifest and Inspector script still read CRM_CANDIDATE_MCP_TOKEN. Those two variables differ; do not print them.

@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "topics": [
+    {"topic":"project","status":"covered","sources":["docs/project.md","server/SPEC.md"],"evidence":"Identity, scope, users, value, boundaries and gated future capabilities are explicit.","checked_at":"2026-10-05"},
+    {"topic":"structure","status":"covered","sources":["README.md","docs/project.md"],"evidence":"Repository areas and their responsibilities are mapped.","checked_at":"2026-10-05"},
+    {"topic":"architecture","status":"covered","sources":["docs/project.md","server/SPEC.md","docs/cloudflare-worker-source-audit.md"],"evidence":"Current deployed path, target MCP Apps design and assumptions are separated.","checked_at":"2026-10-05"},
+    {"topic":"setup","status":"covered","sources":["docs/setup.md"],"evidence":"Prerequisites and reproducible local commands are documented, including the 401 blocker.","checked_at":"2026-10-05"},
+    {"topic":"status","status":"covered","sources":["docs/project.md","docs/open-work.md"],"evidence":"Implemented, planned, blocked and decision-gated states are distinguished.","checked_at":"2026-10-05"},
+    {"topic":"tasks","status":"covered","sources":["docs/open-work.md","docs/agents/issue-tracker.md"],"evidence":"The Linear tracker is authoritative and ACT-140 through ACT-154 are mapped. Its title Lena was rejected on 5 October 2026.","checked_at":"2026-10-05"},
+    {"topic":"decisions","status":"covered","sources":["server/SPEC.md","docs/memory.md","docs/open-work.md"],"evidence":"Stable decisions and unresolved approval gates are explicit.","checked_at":"2026-10-05"},
+    {"topic":"memory-handoff","status":"covered","sources":["docs/memory.md"],"evidence":"Confirmed facts, blockers, boundaries and next actions are recorded.","checked_at":"2026-10-05"},
+    {"topic":"doc-policy","status":"covered","sources":["docs/documentation-policy.md","AGENTS.md"],"evidence":"Canonical sources, update triggers and verification rules are defined.","checked_at":"2026-10-05"},
+    {"topic":"doc-index","status":"covered","sources":["docs/README.md"],"evidence":"Current, historical and superseded sources are indexed with status.","checked_at":"2026-10-05"},
+    {"topic":"changes","status":"covered","sources":["docs/changes.md"],"evidence":"Trigger, before/after state, boundary and verification limits are recorded.","checked_at":"2026-10-05"},
+    {"topic":"checks","status":"covered","sources":["docs/setup.md","candidate-search/tests/evals.json","server/SPEC.md"],"evidence":"Local checks and acceptance criteria are documented; unexecuted live checks are not claimed as passed.","checked_at":"2026-10-05"},
+    {"topic":"api","status":"covered","sources":["candidate-search/skills/crm-kandidatensuche/references/tool-contracts.md","server/SPEC.md"],"evidence":"Current and planned MCP tool contracts, transport and UI boundaries are documented.","checked_at":"2026-10-05"},
+    {"topic":"data-security","status":"covered","sources":["candidate-search/skills/crm-kandidatensuche/references/privacy.md","docs/cloudflare-worker-source-audit.md","server/SPEC.md"],"evidence":"PII, authentication, tenant, SQL and high-risk capability requirements are explicit.","checked_at":"2026-10-05"},
+    {"topic":"operations","status":"covered","sources":["docs/project.md","docs/setup.md","docs/cloudflare-current-state-assessment.md"],"evidence":"Hosting, deployment boundary, observability gaps and no-deploy status are documented.","checked_at":"2026-10-05"},
+    {"topic":"exports","status":"covered","sources":["docs/README.md","docs/open-work.md"],"evidence":"The historical DOCX is identified as stale and future data exports are decision-gated in ACT-152.","checked_at":"2026-10-05"},
+    {"topic":"sources","status":"covered","sources":["docs/sources.md"],"evidence":"Local evidence and current external primary guidance are listed with verification limits.","checked_at":"2026-10-05"}
+  ]
+}

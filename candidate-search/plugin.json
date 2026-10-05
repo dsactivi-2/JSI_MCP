@@ -1,0 +1,15 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "candidate-search",
+  "version": "0.1.0-beta.2",
+  "description": "Read-only candidate search and CRM analysis through a controlled MCP server.",
+  "author": {
+    "name": "Adel Hrnjić"
+  },
+  "keywords": [
+    "crm",
+    "recruiting",
+    "candidates",
+    "mcp"
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "pipedrive-crm": {
+      "type": "http",
+      "url": "https://crm-pipedrive-worker.6f484zn9bd.workers.dev/mcp",
+      "bearer_token_env_var": "CRM_CANDIDATE_MCP_TOKEN"
+    }
+  }
+}

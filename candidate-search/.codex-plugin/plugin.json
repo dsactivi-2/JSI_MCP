@@ -1,0 +1,25 @@
+{
+  "name": "candidate-search",
+  "version": "0.1.0-beta.2",
+  "description": "Read-only candidate search and CRM analysis through a controlled MCP server.",
+  "author": {
+    "name": "Adel Hrnji\u0107"
+  },
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Candidate Search",
+    "shortDescription": "Search and filter CRM candidates safely",
+    "longDescription": "Read-only candidate, profession, language, company, and assignment search through the connected CRM MCP server.",
+    "developerName": "Adel Hrnji\u0107",
+    "category": "Productivity",
+    "capabilities": [
+      "Read"
+    ],
+    "defaultPrompt": [
+      "Mujo udri \u2014 find active candidates matching these filters.",
+      "Count candidates for a profession and language level."
+    ],
+    "brandColor": "#2563EB"
+  },
+  "mcpServers": "./.mcp.json"
+}

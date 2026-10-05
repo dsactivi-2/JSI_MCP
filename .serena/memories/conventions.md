@@ -1,0 +1,1 @@
+Use two-space JSON/YAML indentation, lowercase kebab-case directories, snake_case MCP tool names, and quoted string values in agents/openai.yaml. Keep SKILL.md concise; put detailed policies/contracts in references/. Use synthetic fixtures only. Never store credentials, exports, or real personal data.

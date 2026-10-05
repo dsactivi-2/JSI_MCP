@@ -1,0 +1,28 @@
+{
+  "scopes": [
+    "."
+  ],
+  "exclude": [
+    ".docx-work"
+  ],
+  "required": [
+    "README.md",
+    "AGENTS.md",
+    "docs/README.md",
+    "docs/project.md",
+    "docs/open-work.md",
+    "docs/setup.md",
+    "docs/memory.md",
+    "docs/documentation-policy.md",
+    "docs/sources.md",
+    "docs/changes.md",
+    "docs/coverage.json",
+    "server/SPEC.md"
+  ],
+  "retired_terms": [],
+  "require_review": true,
+  "hook_mode": "warn",
+  "inventory_mode": "filesystem",
+  "max_files": 10000,
+  "max_file_bytes": 20971520
+}
