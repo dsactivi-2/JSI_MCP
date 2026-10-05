@@ -1,5 +1,15 @@
 # Documentation change evidence
 
+## 5 October 2026 — one session for the first server
+
+**Trigger:** The user stopped three agents and asked this session to record its own documents, commit them, and prepare its handover. The three agent handovers were not delivered.
+
+**Before:** The roadmap already started the new server at ACT-141 and left ACT-143 non-blocking. It did not say that one session owns that first server, and it did not record that the stopped agents never handed over.
+
+**After:** docs/memory.md is the handover. It says the three handovers are missing, no live stack check was made for them, and no orchestrator is set up. docs/open-work.md now says one session writes the first server, and that separate work starts only with the later UI modules.
+
+**Not verified in this pass:** the live Worker, the Linear API, and any files the three stopped agents may have changed.
+
 ## 5 October 2026 — planned scope and tracker place
 
 **Trigger:** The user asked for an updated overview of what is planned and what is not, and asked whether the tracker is a repository project or a complete Linear project.

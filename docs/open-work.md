@@ -33,6 +33,10 @@ Not planned:
 - Moving this work into the older Candidate Search Linear project.
 - Inventing a replacement for the rejected title Lena.
 
+## Who writes the first build
+
+One session writes the new server. It starts at ACT-141 and carries ACT-142 and ACT-144 before any broader module. A second session must not edit that same server at the same time. No orchestrator is in place. The later UI modules, ACT-145 through ACT-149, are the first work that can be split, and only after the new server can read candidates, companies, orders, and statistics.
+
 ## Where the tracker lives
 
 The tracker is a complete Linear project in the Activi team. It is not a project inside this Git repository, and it is not the older Candidate Search project. The local Linear cache read on 5 October 2026 contains the project record: name Lena, address `lena-1333951b31fb`, team key ACT, created 2026-10-05 03:54 UTC, description "Separate Cloud CRM MCP application, UI, security, and documentation project." This folder has no commits and no Git remote, so nothing here is a GitHub project. The issue rows in the table were not in that cache record and were not reconfirmed through the Linear API in this check.
