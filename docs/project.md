@@ -58,6 +58,8 @@ under `worker-source/crm-pipedrive-worker/`. Deployment provenance still needs
 to be reconciled before that snapshot is treated as the canonical release
 source (`ACT-143`).
 
+A live read on 5 October 2026 found one newer deployment, version `0898fdb7-7d67-4fb6-a17e-2ef27f8743f6` at 04:13 UTC. Its message records an updated `WORKER_API_KEY` secret. The deployed `index.js` is byte-for-byte the local snapshot, SHA-256 `3afa3e173ad0cf604795407e8e923889ccf79da89235f74c4ae82c229e53378d`. No new server script was deployed. Both local token variables are rejected with HTTP 401.
+
 ## Repository map
 
 - `candidate-search/`: installable plugin, skill, privacy references, synthetic evaluations, and MCP connection metadata.

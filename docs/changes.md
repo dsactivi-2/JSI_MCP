@@ -1,5 +1,15 @@
 # Documentation change evidence
 
+## 5 October 2026 — live stack checked
+
+**Trigger:** The user asked to compare this handover with the other agent's notes and then verify the stack live, without guessing.
+
+**Before:** The handover said the Worker host had not been queried again and that no live check had been made. It still treated the 4 October beta.6 assessment as the newest deployment.
+
+**After:** The live Worker answers. Its current script is the same snapshot already in worker-source. The 5 October 04:13 UTC deployment updated the WORKER_API_KEY secret and did not add a second server. Both configured tokens return HTTP 401. The three stopped-agent handovers are still not in the repository. /tmp/cloud-crm-handover-2026-10-05.md only repeats the previous handover.
+
+**Not verified:** Linear issue status through the API, the new secret's value, and the earlier report of 11 tools.
+
 ## 5 October 2026 — one session for the first server
 
 **Trigger:** The user stopped three agents and asked this session to record its own documents, commit them, and prepare its handover. The three agent handovers were not delivered.

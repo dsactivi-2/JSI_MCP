@@ -39,7 +39,7 @@ One session writes the new server. It starts at ACT-141 and carries ACT-142 and 
 
 ## Where the tracker lives
 
-The tracker is a complete Linear project in the Activi team. It is not a project inside this Git repository, and it is not the older Candidate Search project. The local Linear cache read on 5 October 2026 contains the project record: name Lena, address `lena-1333951b31fb`, team key ACT, created 2026-10-05 03:54 UTC, description "Separate Cloud CRM MCP application, UI, security, and documentation project." This folder has no commits and no Git remote, so nothing here is a GitHub project. The issue rows in the table were not in that cache record and were not reconfirmed through the Linear API in this check.
+The tracker is a complete Linear project in the Activi team. It is not a project inside this Git repository, and it is not the older Candidate Search project. The local Linear cache read on 5 October 2026 contains the project record: name Lena, address `lena-1333951b31fb`, team key ACT, created 2026-10-05 03:54 UTC, description "Separate Cloud CRM MCP application, UI, security, and documentation project." This folder is on branch `codex/cloud-crm-baseline` and has no Git remote, so nothing here is a GitHub project. The issue rows in the table were not in that cache record and were not reconfirmed through the Linear API in this check.
 
 ## Program scope
 
@@ -87,7 +87,7 @@ The order below is the current build decision from 5 October 2026. It replaces t
 ## Known blockers
 
 - The downloaded production bundle is not yet a reproducible canonical source tree.
-- The current shared beta credential returns HTTP 401 in Inspector.
+- On 5 October 2026 at 07:17 UTC the live Worker returned HTTP 401 for an unauthenticated initialize and for both CRM_REMOTE_MCP_TOKEN and CRM_CANDIDATE_MCP_TOKEN. The tool list could not be read. A deployment at 04:13 UTC the same day updated the WORKER_API_KEY secret without changing the script bytes.
 - Codex `crm-remote` reads `CRM_REMOTE_MCP_TOKEN`. `candidate-search/.mcp.json` and `server/scripts/start-inspector.sh` still read `CRM_CANDIDATE_MCP_TOKEN`. On this machine both variables are set and their values differ. Which value the live Worker accepts has not been rechecked from the reconciliation session.
 - The live Worker lacks reviewed OAuth 2.1 identity, tenant and scope enforcement.
 - Existing beta configuration still uses `CRM_CANDIDATE_MCP_TOKEN`; the target

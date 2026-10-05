@@ -40,13 +40,14 @@ This session did not receive the three handovers, did not merge them, and did no
 
 ## Confirmed state
 
-- The live endpoint remains https://crm-pipedrive-worker.6f484zn9bd.workers.dev/mcp and must not be modified yet.
+- The live endpoint remains https://crm-pipedrive-worker.6f484zn9bd.workers.dev/mcp and must not be modified yet. On 5 October 2026 at 07:17 UTC it answered. Unauthenticated initialize returned HTTP 401. Both CRM_REMOTE_MCP_TOKEN and CRM_CANDIDATE_MCP_TOKEN also returned HTTP 401, so neither is the current Worker key. No CRM query was sent.
 - worker-source/ is a downloaded production bundle: wrangler.jsonc and one index.js of about 3.8 MB, without original TypeScript, tests, or a lockfile. It is not the base for the new server. That provenance gap is ACT-143 and does not block the new build.
 - server/ contains the Inspector workspace and server/SPEC.md. It does not yet contain the new server implementation.
 - The tracker is a complete Linear project in the Activi team, not a project inside this repository. A local Linear cache record from 5 October 2026 names it Lena, slug lena-1333951b31fb, team ACT. The issue list was last read earlier that day as ACT-140 through ACT-154, all in Backlog. This later check did not reconfirm comments or status through the Linear API. Do not add another umbrella issue.
-- Codex crm-remote reads CRM_REMOTE_MCP_TOKEN. The plugin and Inspector script read CRM_CANDIDATE_MCP_TOKEN. Both are set on this machine and the values differ. This session did not repeat a live initialize call.
-- An earlier chat reported the connected server as crm-mysql 1.1.0 with 11 tools. That report was not rechecked here.
-- The three stopped agents did not hand over their work here. Nothing they may have changed was merged or checked against the live endpoint.
+- Codex crm-remote reads CRM_REMOTE_MCP_TOKEN. The plugin and Inspector script read CRM_CANDIDATE_MCP_TOKEN. Both are set on this machine, the lengths are 16 and 108, and the values differ. The live Worker rejects both.
+- The deployed script is still the downloaded snapshot. Its SHA-256 is 3afa3e173ad0cf604795407e8e923889ccf79da89235f74c4ae82c229e53378d. The only newer deployment, version 0898fdb7-7d67-4fb6-a17e-2ef27f8743f6 at 2026-10-05 04:13 UTC, records an updated WORKER_API_KEY secret. It has no version tag. No second CRM Worker was created in October.
+- An earlier chat reported the connected server as crm-mysql 1.1.0 with 11 tools. This check could not repeat that, because both tokens were rejected before a tool list.
+- The three stopped agents did not hand over their work here. The short file /tmp/cloud-crm-handover-2026-10-05.md only repeats this handover. The older /tmp/lena-session-handoff-2026-10-05.md was not merged.
 
 ## Next session
 
@@ -62,6 +63,6 @@ This session did not receive the three handovers, did not merge them, and did no
 - Linear, earlier on 5 October 2026: 15 issues, newest update then ACT-144 at 04:05 UTC. No new issue was created. A later check could not reconfirm this live.
 - The three project chats were read. The proposed synthetic-only acceptance seam was rejected by the user.
 - No real CRM query was run in this session.
-- A live initialize from this session did not complete because the Worker host did not resolve here.
+- A live initialize on 5 October 2026 at 07:17 UTC reached the Worker. It returned HTTP 401 for no token and for both configured tokens. Python's default client was blocked earlier by Cloudflare error 1010 and was not used as evidence.
 - The historical DOCX export was not regenerated.
-- No live stack check was run for the stopped agents. The Worker host was not queried again.
+- The account has 17 Workers. Since 1 October only crm-pipedrive-worker changed, and that change was the secret update above. server/ still has no application source.
