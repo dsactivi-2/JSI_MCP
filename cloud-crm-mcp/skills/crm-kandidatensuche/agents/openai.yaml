@@ -6,7 +6,8 @@ dependencies:
   tools:
     - type: "mcp"
       value: "cloud-crm-mcp"
-      description: "This read-only Cloud CRM MCP server. No public URL is assigned yet. Do not call the old Worker."
+      description: "This read-only Cloud CRM MCP server. Codex reaches it through the connection named crm-remote. Do not call the old Worker."
       transport: "streamable_http"
+      url: "https://calm-forge-hk9rc.run.mcp-use.com/mcp"
 policy:
   allow_implicit_invocation: true
