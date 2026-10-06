@@ -149,7 +149,7 @@
         "docs/setup.md",
         "docs/cloudflare-current-state-assessment.md"
       ],
-      "evidence": "Checked 6 October 2026: deployment e97b45da returned one count, 122004 candidates, 117558 active, 1223 companies, 238 orders. Running deployment 2a078755. Old Worker remains the Codex path.",
+      "evidence": "Checked 6 October 2026: deployment e97b45da returned one count, 122004 candidates, 117558 active, 1223 companies, 238 orders. Running deployment 2a078755. Codex crm-remote now points at the new Manufact server and the OAuth login succeeded.",
       "checked_at": "2026-10-06"
     },
     {

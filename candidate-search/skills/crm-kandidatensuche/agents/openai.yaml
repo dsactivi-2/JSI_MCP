@@ -5,9 +5,9 @@ interface:
 dependencies:
   tools:
     - type: "mcp"
-      value: "pipedrive-crm"
+      value: "crm-remote"
       description: "Read-only candidate and CRM search server"
       transport: "streamable_http"
-      url: "https://crm-pipedrive-worker.6f484zn9bd.workers.dev/mcp"
+      url: "https://calm-forge-hk9rc.run.mcp-use.com/mcp"
 policy:
   allow_implicit_invocation: true

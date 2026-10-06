@@ -5,7 +5,7 @@ description: Search, filter, count, and analyze candidate, profession, language,
 
 # CRM candidate search
 
-Use the connected `pipedrive-crm` MCP only within the user's requested scope. All access is read-only.
+Use the connected `crm-remote` MCP only within the user's requested scope. All access is read-only.
 
 ## Beta trigger
 

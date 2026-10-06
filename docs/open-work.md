@@ -117,10 +117,10 @@ The first four steps were set on 5 October 2026. Steps 5 through 8 were added on
 
 - The downloaded production bundle is not yet a reproducible canonical source tree.
 - On 5 October 2026 at 07:17 UTC the live Worker returned HTTP 401 for an unauthenticated initialize and for both CRM_REMOTE_MCP_TOKEN and CRM_CANDIDATE_MCP_TOKEN. The tool list could not be read. A deployment at 04:13 UTC the same day updated the WORKER_API_KEY secret without changing the script bytes.
-- Codex `crm-remote` reads `CRM_REMOTE_MCP_TOKEN`. `candidate-search/.mcp.json` and `server/scripts/start-inspector.sh` still read `CRM_CANDIDATE_MCP_TOKEN`. On this machine both variables are set and their values differ. Which value the live Worker accepts has not been rechecked from the reconciliation session.
+- Codex `crm-remote` now uses OAuth against the new Manufact server. `candidate-search/.mcp.json` no longer carries the old Worker address. `server/scripts/start-inspector.sh` still reads `CRM_CANDIDATE_MCP_TOKEN`. Which value the live Worker accepts has not been rechecked from the reconciliation session.
 - The live Worker lacks reviewed OAuth 2.1 identity, tenant and scope enforcement.
 - Existing beta configuration still uses `CRM_CANDIDATE_MCP_TOKEN`; the target
   name is `CRM_REMOTE_MCP_TOKEN` and requires one coordinated migration.
 - The old Worker still must not be changed. The new Manufact server is deployed and its count works.
 - The tracker still contains exactly ACT-140 through ACT-154, all in Backlog. No sixteenth issue was published. A question the user did not understand is not approval to add another spec.
-- The new server can count CRM data. Candidate rows were not read. The live Worker stays the Codex path until the user asks for the switch.
+- The new server can count CRM data. Candidate rows were not read. Codex crm-remote now points at the new server. The old Worker was not changed.

@@ -1,5 +1,16 @@
 # Documentation change evidence
 
+## 7 October 2026 — Codex uses the new CRM server
+
+**Trigger:** The user asked to remove the old Codex CRM connections and install the new server.
+
+**Before:** Codex had crm-remote and cloudworker-hyperdrive, both aimed at the old Worker. The plugin package named that old address too.
+
+**After:** Both old Codex entries are removed. crm-remote is https://calm-forge-hk9rc.run.mcp-use.com/mcp and the OAuth login succeeded. The plugin package names that same address and no longer carries the old bearer variable. The old Worker was not changed.
+
+**Checked:** codex mcp get showed the new address and no bearer variable. The login command reported success. Not checked: a candidate row read through Codex.
+
+
 ## 6 October 2026 — The Manufact server can count the existing MySQL database
 
 **Trigger:** CRM_DATABASE_URL was saved in Manufact. The server had no MySQL client.

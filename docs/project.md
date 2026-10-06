@@ -24,7 +24,7 @@ Checked on 6 October 2026 at 20:52 UTC: the new server is online at https://calm
 
 Decision DEC-2026-10-06-same-database: "getrennte Datenbank" means a new connection to the same existing MySQL database, not a second database. The old Worker, its host, and its Hyperdrive id stay untouched. That connection is configured and the count above is the check.
 
-The installable plugin still points at the old Worker. A screenshot in this chat showed Manufact connected as ds@activi.io. That browser session was not repeated in the 20:52 UTC check.
+On 7 October 2026 Codex crm-remote was switched to https://calm-forge-hk9rc.run.mcp-use.com/mcp and the OAuth login succeeded. The old Worker entries were removed.
 
 The installable package is `candidate-search/`, currently version `0.1.0-beta.2`. Its portable identity is `plugin.json`; the Codex beta connection uses `.codex-plugin/plugin.json` and `.mcp.json`.
 
@@ -67,7 +67,7 @@ A source read of that same local file on 5 October 2026 confirms the hash and th
 
 ## Repository map
 
-- `candidate-search/`: installable plugin, skill, privacy references, synthetic evaluations, and the live MCP connection. That connection still points at the old Worker.
+- `candidate-search/`: installable plugin, skill, privacy references, synthetic evaluations, and the MCP connection. The connection now names the new Manufact server.
 - `docs/`: project context, assessments, and agent-facing tracker configuration.
 - `scripts/`: local package validation without CRM access.
 - `server/`: local workshop for the earlier read behavior. It is not the mcp-use server.
@@ -76,7 +76,7 @@ A source read of that same local file on 5 October 2026 confirms the hash and th
 
 ## Boundaries
 
-The installable plugin still reaches CRM data through the old Cloudflare Worker. The new server in `cloud-crm-mcp/` is online on Manufact and can count the existing database. It is not the plugin path. Skill files and fixtures must not contain credentials, database code, candidate exports, or real personal data. Authorization, tenant scope, SQL limits, and output redaction must be enforced by server handlers; plugin instructions are not a security boundary.
+The installable plugin now names the new Manufact server. Codex crm-remote points there too. The new server can count the existing database. Skill files and fixtures must not contain credentials, database code, candidate exports, or real personal data. Authorization, tenant scope, SQL limits, and output redaction must be enforced by server handlers; plugin instructions are not a security boundary.
 
 The beta reads its bearer credential from the host environment. The target
 variable name is `CRM_REMOTE_MCP_TOKEN`; existing files still contain the older
@@ -102,7 +102,7 @@ Use MCP Inspector against an authorized isolated deployment for initialization, 
 - Next: the count is proven. Real candidate, company, and order reads are not proven. Do not create a second database, and do not change the old Worker or its Hyperdrive id.
 - Verify a real read after that connection exists. No CRM result has been proven on the new server.
 - Enforce the WorkOS roles in the tool handlers. crm:read and sql:read are not enforced there today.
-- Point Codex at the new server only after a real read works. It still uses the old Worker and CRM_CANDIDATE_MCP_TOKEN.
+- Codex crm-remote now uses the new server. Candidate, company, and order rows are still not proven.
 - Reach the Inspector on the online server. The public /mcp/inspector path returned 404 on 6 October 2026 at 20:52 UTC.
 - Confirm the canonical relationship between the old deployed Worker and `worker-source/` (`ACT-143`).
 - Keep phases 2 through 5 behind their existing gates. They are included and not built.
