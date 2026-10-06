@@ -31,7 +31,7 @@ When `OAUTH_ISSUER` is set, the server also requires `OAUTH_AUTHORIZATION_ENDPOI
 
 ## Deploy on Manufact Cloud
 
-Manufact is the temporary host. Deployment c0be2dd3 is the running deployment checked on 6 October 2026. The WorkOS Staging AuthKit address turns discovery on. Cloudflare remains a later option. CRM_DATABASE_URL is not a production variable yet.
+Manufact is the temporary host. Deployment 2a078755 is the running deployment. The WorkOS Staging AuthKit address turns discovery on. Cloudflare remains a later option. CRM_DATABASE_URL is set in Manufact and is not stored in this repository. TLS uses the Aiven project CA. One count was proven on deployment e97b45da.
 
 ```bash
 npm run deploy

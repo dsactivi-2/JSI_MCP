@@ -20,9 +20,9 @@ The approved planning scope is broader. On 6 October 2026 the user included eigh
 
 On 6 October 2026 the user required the new server to be hosted online and to read the existing live MySQL database. Decision DEC-2026-10-06-mcp-use selects mcp-use as the kit. It replaces the earlier SDK-on-a-Worker choice in DEC-2026-10-06-hosted-stack. A same-day note named Cloudflare Containers and said Manufact was not used. Later the same day the user chose Manufact as the temporary host. Cloudflare remains later.
 
-Checked on 6 October 2026 at 20:52 UTC: the new server is online at https://calm-forge-hk9rc.run.mcp-use.com/mcp. Manufact server id 9e075f18-34d7-4a71-a3e9-88868821addb, active deployment c0be2dd3-77e8-46ac-824f-9942bc265c9f, status running since 16:42 UTC. /health returned 200. /.well-known/oauth-protected-resource returned 200 and names https://balanced-lantern-65-staging.authkit.app. A call without a token returned 401. /mcp/inspector returned 404. Production variables are CRM_MCP_SERVER_TOKEN, MCP_USE_OAUTH_WORKOS_SUBDOMAIN, and OAUTH_RESOURCE. CRM_DATABASE_URL is not set. No CRM query was sent.
+Checked on 6 October 2026 at 20:52 UTC: the new server is online at https://calm-forge-hk9rc.run.mcp-use.com/mcp. Manufact server id 9e075f18-34d7-4a71-a3e9-88868821addb, active deployment c0be2dd3-77e8-46ac-824f-9942bc265c9f, status running since 16:42 UTC. /health returned 200. /.well-known/oauth-protected-resource returned 200 and names https://balanced-lantern-65-staging.authkit.app. A call without a token returned 401. /mcp/inspector returned 404. Production variables now also include sensitive CRM_DATABASE_URL. On 6 October 2026 deployment e97b45da-8bae-408b-932c-f40e16bd821a ran crm_stats once: 122004 candidates, 117558 active, 1223 companies, and 238 orders. No candidate rows were returned. Deployment 2a078755-5753-4a37-a791-0205a69a43b1 is the running deployment and keeps that client without the startup log.
 
-Decision DEC-2026-10-06-same-database: "getrennte Datenbank" means a new connection to the same existing MySQL database, not a second database. The old Worker, its host, and its Hyperdrive id stay untouched. That connection is not configured yet.
+Decision DEC-2026-10-06-same-database: "getrennte Datenbank" means a new connection to the same existing MySQL database, not a second database. The old Worker, its host, and its Hyperdrive id stay untouched. That connection is configured and the count above is the check.
 
 The installable plugin still points at the old Worker. A screenshot in this chat showed Manufact connected as ds@activi.io. That browser session was not repeated in the 20:52 UTC check.
 
@@ -71,19 +71,19 @@ A source read of that same local file on 5 October 2026 confirms the hash and th
 - `docs/`: project context, assessments, and agent-facing tracker configuration.
 - `scripts/`: local package validation without CRM access.
 - `server/`: local workshop for the earlier read behavior. It is not the mcp-use server.
-- `cloud-crm-mcp/`: the mcp-use read server deployed on Manufact. Phase-1 tools are registered. It also serves the skill `crm-kandidatensuche` and search guide 1.2.0. It is not connected to MySQL. It refuses the old Worker host and the old Hyperdrive id.
+- `cloud-crm-mcp/`: the mcp-use read server deployed on Manufact. Phase-1 tools are registered. It also serves the skill `crm-kandidatensuche` and search guide 1.2.0. It connects with TLS to the existing MySQL database when CRM_DATABASE_URL is set, using the Aiven project CA. It refuses the old Worker name and the old Hyperdrive id.
 - `worker-source/`: local Cloudflare Worker source snapshot.
 
 ## Boundaries
 
-The installable plugin still reaches CRM data through the old Cloudflare Worker. The new server in `cloud-crm-mcp/` is online on Manufact, but it is not the plugin path and it has no database connection. Skill files and fixtures must not contain credentials, database code, candidate exports, or real personal data. Authorization, tenant scope, SQL limits, and output redaction must be enforced by server handlers; plugin instructions are not a security boundary.
+The installable plugin still reaches CRM data through the old Cloudflare Worker. The new server in `cloud-crm-mcp/` is online on Manufact and can count the existing database. It is not the plugin path. Skill files and fixtures must not contain credentials, database code, candidate exports, or real personal data. Authorization, tenant scope, SQL limits, and output redaction must be enforced by server handlers; plugin instructions are not a security boundary.
 
 The beta reads its bearer credential from the host environment. The target
 variable name is `CRM_REMOTE_MCP_TOKEN`; existing files still contain the older
 `CRM_CANDIDATE_MCP_TOKEN` name and require a coordinated migration. The
 credential must never be placed in a URL, manifest, skill, log, archive, or Git
 commit. OAuth 2.1 is the account-linking mechanism for the new server
-(`ACT-142`). Deployment c0be2dd3 publishes WorkOS Staging discovery and keeps CRM_MCP_SERVER_TOKEN as a fallback. WorkOS mode does not require the OAuth scope crm:read at the gate. Discovery advertises openid, profile, email, and offline_access. Only crm_query declares sql:read. No tool handler checks the WorkOS role, and no tenant isolation exists. The live token contents were not read in the 20:52 UTC check.
+(`ACT-142`). Deployment 2a078755 publishes WorkOS Staging discovery and keeps CRM_MCP_SERVER_TOKEN as a fallback. At 21:53 UTC, /health returned 200, discovery returned 200, and /mcp without a token returned 401. WorkOS mode does not require the OAuth scope crm:read at the gate. Discovery advertises openid, profile, email, and offline_access. Only crm_query declares sql:read. No tool handler checks the WorkOS role, and no tenant isolation exists. The live token contents were not read in the 20:52 UTC check.
 
 ## Current verification
 
@@ -99,7 +99,7 @@ Use MCP Inspector against an authorized isolated deployment for initialization, 
 
 ## Open foundation gaps
 
-- Next: add one new connection from the Manufact server to the same existing MySQL database. Do not create a second database, and do not change the old Worker or its Hyperdrive id.
+- Next: the count is proven. Real candidate, company, and order reads are not proven. Do not create a second database, and do not change the old Worker or its Hyperdrive id.
 - Verify a real read after that connection exists. No CRM result has been proven on the new server.
 - Enforce the WorkOS roles in the tool handlers. crm:read and sql:read are not enforced there today.
 - Point Codex at the new server only after a real read works. It still uses the old Worker and CRM_CANDIDATE_MCP_TOKEN.

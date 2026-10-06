@@ -29,7 +29,7 @@
         "server/SPEC.md",
         "docs/cloudflare-worker-source-audit.md"
       ],
-      "evidence": "The old Worker path and the Manufact server are separated. The new server refuses the old host and old Hyperdrive id and has no database connection.",
+      "evidence": "The old Worker path and the Manufact server are separated. The new server refuses the old Worker name and old Hyperdrive id. One count on the existing MySQL database is proven.",
       "checked_at": "2026-10-06"
     },
     {
@@ -48,7 +48,7 @@
         "docs/project.md",
         "docs/open-work.md"
       ],
-      "evidence": "Manufact deployment c0be2dd3 is running. Phase-1 tools are registered. MySQL is not connected, no CRM read is proven, and phases 2 through 5 are not built.",
+      "evidence": "Manufact deployment 2a078755 is running. Phase-1 tools are registered. One count is proven. Candidate rows were not read, and phases 2 through 5 are not built.",
       "checked_at": "2026-10-06"
     },
     {
@@ -149,7 +149,7 @@
         "docs/setup.md",
         "docs/cloudflare-current-state-assessment.md"
       ],
-      "evidence": "Checked 6 October 2026 at 20:52 UTC: /health 200, OAuth discovery 200, unauthenticated /mcp 401, public Inspector 404. No CRM_DATABASE_URL. Old Worker remains the Codex path.",
+      "evidence": "Checked 6 October 2026: deployment e97b45da returned one count, 122004 candidates, 117558 active, 1223 companies, 238 orders. Running deployment 2a078755. Old Worker remains the Codex path.",
       "checked_at": "2026-10-06"
     },
     {

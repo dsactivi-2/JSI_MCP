@@ -1,6 +1,7 @@
 import { MCPServer } from "mcp-use";
 import { z } from "zod";
 import { SQL_SCOPE, createOAuthProvider } from "./src/auth.js";
+import { openDatabase } from "./src/db.js";
 import { assertSeparateInfrastructure } from "./src/guard.js";
 import { GUIDE_JSON_URI, GUIDE_MARKDOWN_URI, readGuide } from "./src/guides.js";
 import {
@@ -19,13 +20,17 @@ import {
 
 const readOnly = { readOnlyHint: true, destructiveHint: false, openWorldHint: false } as const;
 let database: Db | null = null;
+let databaseEnv: NodeJS.ProcessEnv = process.env;
 
 export function setDatabase(next: Db | null): void {
   database = next;
 }
 
 function db(): Db {
-  if (!database) throw new Error("CRM_DATABASE_URL fehlt. Ein neuer, eigener Datenbankanschluss ist noch nicht gesetzt.");
+  if (!database) {
+    if (!databaseEnv.CRM_DATABASE_URL) throw new Error("CRM_DATABASE_URL fehlt. Ein neuer, eigener Datenbankanschluss ist noch nicht gesetzt.");
+    database = openDatabase(databaseEnv);
+  }
   return database;
 }
 
@@ -35,6 +40,8 @@ function ok(data: unknown) {
 
 export function createCloudCrmServer(env: NodeJS.ProcessEnv = process.env) {
   assertSeparateInfrastructure(env);
+  databaseEnv = env;
+  database = null;
   const oauth = createOAuthProvider(env);
   const config = {
     name: "cloud-crm-mcp",

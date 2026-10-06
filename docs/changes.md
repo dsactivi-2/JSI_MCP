@@ -1,5 +1,16 @@
 # Documentation change evidence
 
+## 6 October 2026 — The Manufact server can count the existing MySQL database
+
+**Trigger:** CRM_DATABASE_URL was saved in Manufact. The server had no MySQL client.
+
+**Before:** Deployment c0be2dd3 was running. The read tools were registered, but no database client existed and no CRM read was proven.
+
+**After:** cloud-crm-mcp opens MySQL only when CRM_DATABASE_URL is set, forces TLS with the Aiven project CA, and strips addresses and passwords from database errors. Pages stay at 50. Counts stay complete. Deployment e97b45da-8bae-408b-932c-f40e16bd821a ran crm_stats once: 122004 candidates, 117558 active, 1223 companies, and 238 orders. No candidate rows were read. Running deployment 2a078755-5753-4a37-a791-0205a69a43b1 has the same client without the startup log. At 21:53 UTC, /health returned 200, OAuth discovery returned 200, and /mcp without a token returned 401. The old Worker was not changed.
+
+**Checked:** npm test and mcp-use typecheck in cloud-crm-mcp, both passing, 16 tests. Manufact deployment status running. The one count in the runtime log of e97b45da. The HTTP checks above. Not checked: candidate, company, or order rows, the shared-token fallback, or a switch of the Codex plugin path.
+
+
 ## 6 October 2026 — Active docs now match the running Manufact server
 
 **Trigger:** The user asked what "mostly" left open, and then asked for the docs, checklists, and dependent wording to be updated before the next task.

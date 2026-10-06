@@ -35,7 +35,7 @@ The current wrapper reads `CRM_CANDIDATE_MCP_TOKEN`. The target project-wide
 name is `CRM_REMOTE_MCP_TOKEN`; changing the wrapper and manifests together is
 open work. Do not store either value in a URL or committed file.
 
-The old Worker endpoint last returned HTTP 401 on 5 October 2026, including for both configured tokens. The new server is separate. On 6 October 2026 at 20:52 UTC its /health returned 200, its OAuth discovery returned 200, a call without a token returned 401, and https://calm-forge-hk9rc.run.mcp-use.com/mcp/inspector returned 404. Tool behavior against CRM data is not verified because CRM_DATABASE_URL is not set.
+The old Worker endpoint last returned HTTP 401 on 5 October 2026, including for both configured tokens. The new server is separate. On 6 October 2026 at 20:52 UTC its /health returned 200, its OAuth discovery returned 200, a call without a token returned 401, and https://calm-forge-hk9rc.run.mcp-use.com/mcp/inspector returned 404. One crm_stats count was verified on 6 October 2026 through deployment e97b45da. Candidate rows were not read. Running deployment is 2a078755.
 
 ## Documentation checks
 

@@ -21,9 +21,9 @@ On 6 October 2026 the user decided the product server must be online and hosted,
 
 Decision DEC-2026-10-06-mcp-use: build the server with mcp-use. A same-day note named Cloudflare Containers and said Manufact was not used. Later the same day the user chose Manufact as the host for now. Cloudflare stays later. Deploy goes through mcp-use to Manufact, not to the old Worker.
 
-Checked on 6 October 2026 at 20:52 UTC: https://calm-forge-hk9rc.run.mcp-use.com/mcp is running as deployment c0be2dd3-77e8-46ac-824f-9942bc265c9f, started 16:42 UTC. /health returned 200. Discovery returned 200 and names https://balanced-lantern-65-staging.authkit.app. A call without a token returned 401. /mcp/inspector returned 404. Production variables are only CRM_MCP_SERVER_TOKEN, MCP_USE_OAUTH_WORKOS_SUBDOMAIN, and OAUTH_RESOURCE. CRM_DATABASE_URL is absent. The shared token was not sent. No CRM query ran.
+Checked on 6 October 2026 at 20:52 UTC: https://calm-forge-hk9rc.run.mcp-use.com/mcp is running as deployment c0be2dd3-77e8-46ac-824f-9942bc265c9f, started 16:42 UTC. /health returned 200. Discovery returned 200 and names https://balanced-lantern-65-staging.authkit.app. A call without a token returned 401. /mcp/inspector returned 404. CRM_DATABASE_URL is now set and was not printed. Deployment e97b45da returned one count: 122004 candidates, 117558 active, 1223 companies, 238 orders. Running deployment 2a078755 keeps the same client without logging that count on startup.
 
-Decision DEC-2026-10-06-same-database: separate infrastructure means a new connection to the same existing MySQL database, not a second database. The old Worker host and the old Hyperdrive id stay refused by cloud-crm-mcp/src/guard.ts. The phase-1 read tools are registered. That database connection is the next step and is not done.
+Decision DEC-2026-10-06-same-database: separate infrastructure means a new connection to the same existing MySQL database, not a second database. The old Worker host and the old Hyperdrive id stay refused by cloud-crm-mcp/src/guard.ts. The phase-1 read tools are registered. The new connection is in place and one count is verified. Candidate rows were not read.
 
 On 6 October 2026 the user chose WorkOS. Staging user ds@activi.io accepted the invitation and has the role CRM mit SQL in organization Activi. Dynamic Client Registration and Client ID Metadata Document were enabled. A screenshot in this chat showed Manufact connected as ds@activi.io. That browser login was not repeated at 20:52 UTC. WorkOS discovery does not advertise crm:read. The server does not enforce that role in tool handlers. No tenant isolation exists.
 
@@ -67,7 +67,7 @@ This session did not receive the three handovers, did not merge them, and did no
 ## Next session
 
 1. Read this file, docs/project.md, docs/open-work.md, and server/SPEC.md.
-2. Add the new connection from the running Manufact server to the same existing MySQL database. Do not create a second database. Do not use the old Worker host or the old Hyperdrive id.
+2. The new connection and one count are done. Do not create a second database. Do not use the old Worker name or the old Hyperdrive id. Candidate rows are still unread.
 3. Test that connection with one real count and one real read. Do not treat synthetic Inspector cases as the only acceptance.
 4. Leave the live Worker and the Codex plugin path in place until that read works and the user asks for the switch.
 5. Then enforce WorkOS roles per tool, and only after that point Codex at the new server.

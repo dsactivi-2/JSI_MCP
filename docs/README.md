@@ -7,7 +7,7 @@ This directory is the current documentation entry point for the Cloud CRM MCP pr
 | Topic | Canonical current source | Status |
 | --- | --- | --- |
 | Project, scope, boundaries | [project.md](project.md) | Current |
-| Product and UI specification | [../server/SPEC.md](../server/SPEC.md) | Phase 1 is deployed without a database. Phases 2 through 5 are not built |
+| Product and UI specification | [../server/SPEC.md](../server/SPEC.md) | Phase 1 is deployed and one database count is proven. Phases 2 through 5 are not built |
 | Architecture and repository map | [project.md](project.md) | Current |
 | Setup and checks | [setup.md](setup.md) | Current; live Inspector authorization blocked |
 | Work and decisions | [open-work.md](open-work.md) and the Linear tracker at https://linear.app/activi/project/lena-1333951b31fb | Linear is authoritative for status; its title is not the product name |
