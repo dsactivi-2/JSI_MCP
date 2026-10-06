@@ -1,5 +1,6 @@
 import { MCPServer } from "mcp-use";
 import { z } from "zod";
+import { SQL_SCOPE, createOAuthProvider } from "./src/auth.js";
 import { assertSeparateInfrastructure } from "./src/guard.js";
 import { GUIDE_JSON_URI, GUIDE_MARKDOWN_URI, readGuide } from "./src/guides.js";
 import {
@@ -15,16 +16,6 @@ import {
   runStats,
   type Db,
 } from "./src/read.js";
-
-assertSeparateInfrastructure();
-
-const server = new MCPServer({
-  name: "cloud-crm-mcp",
-  title: "Cloud CRM MCP",
-  version: "0.1.0",
-  description: "Read-only CRM MCP server on separate infrastructure.",
-  skills: true,
-});
 
 const readOnly = { readOnlyHint: true, destructiveHint: false, openWorldHint: false } as const;
 let database: Db | null = null;
@@ -42,15 +33,39 @@ function ok(data: unknown) {
   return { content: [{ type: "text" as const, text: JSON.stringify(data) }], structuredContent: data };
 }
 
-server.app.use("/mcp", async (c, next) => {
-  if (c.req.query("token")) return c.json({ error: "Token in der URL ist verboten." }, 401);
-  const expected = process.env.CRM_MCP_SERVER_TOKEN ?? "";
-  if (!expected) return c.json({ error: "CRM_MCP_SERVER_TOKEN fehlt." }, 503);
-  if (c.req.header("authorization") !== "Bearer " + expected) return c.json({ error: "Nicht angemeldet." }, 401);
-  await next();
-});
+export function createCloudCrmServer(env: NodeJS.ProcessEnv = process.env) {
+  assertSeparateInfrastructure(env);
+  const oauth = createOAuthProvider(env);
+  const config = {
+    name: "cloud-crm-mcp",
+    title: "Cloud CRM MCP",
+    version: "0.1.0",
+    description: "Read-only CRM MCP server on separate infrastructure.",
+    skills: true,
+  } as const;
+  const server = oauth ? new MCPServer({ ...config, oauth }) : new MCPServer(config);
 
-server.tool({
+
+server.app.use("/mcp", async (c, next) => {
+    if (c.req.query("token")) return c.json({ error: "Token in der URL ist verboten." }, 401);
+    if (!oauth) {
+      const expected = env.CRM_MCP_SERVER_TOKEN ?? "";
+      if (!expected) return c.json({ error: "CRM_MCP_SERVER_TOKEN fehlt." }, 503);
+      if (c.req.header("authorization") !== "Bearer " + expected) return c.json({ error: "Nicht angemeldet." }, 401);
+    }
+    await next();
+  });
+
+  if (oauth) {
+    server.app.use("*", async (c, next) => {
+      if (c.req.path !== "/.well-known/oauth-protected-resource") return next();
+      const url = new URL(c.req.url);
+      url.pathname = "/.well-known/oauth-protected-resource/mcp";
+      return server.fetch(new Request(url, c.req.raw));
+    });
+  }
+
+  server.tool({
   name: "crm_search_kandidaten",
   description: "Kandidaten lesen. Geburtsdatum ist in jeder Zeile. Eine Seite hat 50 Zeilen.",
   inputSchema: z.object({
@@ -131,6 +146,7 @@ server.tool({
   description: "Ein lesendes SELECT. Eine Liste hat 50 Zeilen, eine Zaehlung bleibt vollstaendig.",
   inputSchema: z.object({ sql: z.string().min(1) }).strict(),
   annotations: readOnly,
+  ...(oauth ? { securitySchemes: [{ type: "oauth2" as const, scopes: [SQL_SCOPE] }] } : {}),
 }, async (args) => ok(await runCrmQuery(db(), args.sql)));
 
 server.tool({
@@ -171,4 +187,8 @@ server.resource({
   contents: [{ uri: uri.href, mimeType: "text/markdown", text: readGuide("markdown") }],
 }));
 
+  return server;
+}
+
+const server = createCloudCrmServer();
 export default server;

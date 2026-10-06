@@ -77,7 +77,7 @@ variable name is `CRM_REMOTE_MCP_TOKEN`; existing files still contain the older
 `CRM_CANDIDATE_MCP_TOKEN` name and require a coordinated migration. The
 credential must never be placed in a URL, manifest, skill, log, archive, or Git
 commit. OAuth 2.1 remains the intended final account-linking mechanism
-(`ACT-142`).
+(`ACT-142`). The new server code in cloud-crm-mcp now publishes OAuth discovery when its issuer settings are present, and it keeps CRM_MCP_SERVER_TOKEN as a fallback. That code is deployment #3. Discovery stays off until the issuer settings are present.
 
 ## Current verification
 

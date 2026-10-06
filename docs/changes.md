@@ -1,5 +1,27 @@
 # Documentation change evidence
 
+## 6 October 2026 — OAuth-capable code deployed, discovery still off
+
+**Trigger:** The user asked to deploy the prepared OAuth code and commit it.
+
+**Before:** Manufact deployment 264d9053-8bbb-4738-a9aa-17d0b856e0cc was running. OAuth code existed only locally.
+
+**After:** Deployment #3 edeadc6f-043e-4b9c-a49c-0e4345d6df7c is running at https://calm-forge-hk9rc.run.mcp-use.com/mcp. /health returned 200. A call without a token returned 401 with the text Nicht angemeldet. Both discovery addresses still returned 404. CRM_MCP_SERVER_TOKEN is still the only production variable. No OAuth issuer is set, so the live login path is unchanged. The shared token was not sent again in this check.
+
+**Checked:** Manufact status running, plus the HTTP calls above. Not checked: a bearer initialize, a real provider, or a database query.
+
+
+## 6 October 2026 — OAuth code is in the server, not deployed
+
+**Trigger:** The user asked for OAuth 2.0 as the main login, with the shared token kept during the change.
+
+**Before:** The public Manufact server accepts only `CRM_MCP_SERVER_TOKEN` and returns a plain 401. `/.well-known/oauth-protected-resource` returned 404.
+
+**After:** `cloud-crm-mcp` can act as an OAuth resource server when the issuer, both endpoints, the JWKS URL, and the public resource URL are set. Discovery is served at `/.well-known/oauth-protected-resource` and `/.well-known/oauth-protected-resource/mcp`. Every tool requires `crm:read`. Free SQL also requires `sql:read`. The shared token still works. No provider is chosen, no client secret belongs in this server, and the running Manufact deployment was not updated.
+
+**Checked:** `npm test` passed with 12 tests and `npm run typecheck` passed. Not checked: a real provider login, Manufact discovery after deploy, or a database query.
+
+
 ## 6 October 2026 — Manufact deploy is online
 
 **Trigger:** The user approved the Manufact login and asked to continue.
