@@ -1,6 +1,6 @@
 # Cloud CRM MCP open work
 
-Status date: 5 October 2026
+Status date: 6 October 2026
 
 The Linear tracker at https://linear.app/activi/project/lena-1333951b31fb is authoritative for assignment and status. Its title Lena was rejected on 5 October 2026 and is not the product name. This file is the local roadmap. Do not place this work in the older Candidate Search project.
 
@@ -8,27 +8,56 @@ The Linear tracker at https://linear.app/activi/project/lena-1333951b31fb is aut
 
 This is the current cut. Ticket numbers stay in the table below.
 
+Eight points on the new server, decision DEC-2026-10-06-phased-scope:
+
+| Point | New server | Phase |
+| --- | --- | --- |
+| Birth date in the search list | Yes | 1 |
+| EU-citizen filter | Yes | 1 |
+| Free read-only SQL | Yes | 1; the visual console is phase 2 |
+| List and describe tables | Yes | 1; the visual console is phase 2 |
+| Own screens | Yes | 2 |
+| Scoring | Yes, engine not chosen | 3 |
+| Writes, export, import | Yes | 4 |
+| Ranking, photos, biometrics | Yes | 5 |
+
+Yes means included. It does not mean built.
+
+Hosting decision DEC-2026-10-06-mcp-use, 6 October 2026. This replaces the framework choice in DEC-2026-10-06-hosted-stack.
+
+The user chose mcp-use as the building kit. A note the same day wrote Cloudflare Containers as the host and Manufact as not used, because the user had said to host on Cloudflare and asked why Manufact was needed. Later the same day the user said that host closure was not clear and was closed on the assistant side. On 6 October 2026 the user chose Manufact as the host for now. Cloudflare stays a later option. The product server must be online, not a local process. The new database connection comes after that hosting. The mcp-use Inspector is wanted against the online server, not as a local stand-in. The Manufact server is online at https://calm-forge-hk9rc.run.mcp-use.com/mcp. There is still no Dockerfile and no Wrangler file in cloud-crm-mcp.
+
+The delivered server still has to read the existing MySQL database through a new connection. The old Worker and its Hyperdrive binding stay untouched. cloud-crm-mcp refuses that old host and that old Hyperdrive id. The phase-1 read tools are registered there. The plugin skill and both search guides are served by that server as guide version 1.2.0, without the old Worker address. No database URL is configured and nothing was deployed. mcp-use does not document Cloudflare as a deploy target. The container path is taken from Cloudflare's own container docs.
+
+The whole function list remains in scope. The first online server is the read server. Language filtering, follow-up pages, profession variants, and the search guide are now in the server code. It can go online before the database is attached. Until then the read tools answer that the database URL is missing. Phases 2 through 5 stay included and stay behind their existing gates.
+
 Planned for the first build:
 
-- A new read-only server beside the live Worker, connected to the existing MySQL database.
+- A hosted read-only mcp-use server on Cloudflare Containers, beside the live Worker, connected to the existing MySQL database. A Worker is only the front door. Not Manufact and not FastMCP.
 - Reads for candidates, companies, orders, and statistics.
+- `crm_beruf_report`: distinct candidate count, overlapping term groups, and top positions. The position list defaults to 15 and caps at 50. Archived status 3 stays excluded unless requested. A language breakdown is included only when a language is named. Do not default it to German or `Njemački`.
+- `crm_list_tables` and `crm_describe_table`: list and describe the allowed tables. Decided yes for the new server on 6 October 2026.
+- Candidate lists load 50 rows per page. The server adds no default limit that ends the result, and it does not load 2000 candidates in one response. The next page continues until no rows remain. A count returns the full number and does not stop at 50. Decided on 6 October 2026.
+- `crm_query`: read-only free SQL follows the same split. A list is paged at 50. A count returns the full number. The server does not append `LIMIT 200`. It is not the normal candidate search.
 - Tests with real quotas and real read queries. Synthetic Inspector cases are not the only acceptance.
 - Start at ACT-141. Carry ACT-142 and ACT-144 before exposing broader modules.
+- Birth date in every candidate search row, and the eu_buerger filter. false also includes an empty citizenship field.
 
-Planned later, not in the first build:
+Planned later, included on the new server, not in the first build:
 
-- Read-only UI modules, ACT-145 through ACT-149.
-- The privileged query console, ACT-150, only after its security gate.
-- The TypeSafe design gate, ACT-151.
-- Decision gates for exports and writes, ACT-152, and for ranking, photos, and biometrics, ACT-153.
-- Inspector, evaluation, and release evidence, ACT-154.
+Decision DEC-2026-10-06-phased-scope, 6 October 2026. These four points are Ja. They are not built.
+
+- Phase 2, own screens: read-only UI modules, ACT-145 through ACT-149. The visual admin console, ACT-150, follows them and still waits for its security gate. The table and free-SQL tools themselves stay in the first server.
+- Phase 3, scoring: ACT-151 still names TypeSafe. The engine is not chosen. The user is still checking TypeSafe and a Cloudflare model they called Clef. Core CRM search works without it.
+- Phase 4, writes, export, and import: ACT-152, including the bulk actions already grouped there.
+- Phase 5, ranking, photos, and biometrics: ACT-153, including the employment-decision scope already grouped there. No evidenced legal review yet, so this phase is not authorized on real photos or biometric data.
+- Inspector, evaluation, and release evidence, ACT-154, stays with every phase that is actually built.
 - Provenance of the downloaded bundle, ACT-143. It stays open and does not block the new server.
 
 Not planned:
 
-- Building the new server from the downloaded snapshot. That snapshot is `worker-source/crm-pipedrive-worker/wrangler.jsonc` plus one bundled `src/index.js` of about 3.8 MB. It has no original TypeScript project, tests, or lockfile, and it carries the known release blockers.
+- Deploying the downloaded bundle unchanged. The new server starts from worker-source/crm-pipedrive-worker/src/index.js and keeps its candidate search behavior: exact counts, count_only, cursor pages, the eu_buerger filter, and the birth date in search rows. It must still remove SELECT * on assignments, the query-string token, and the lack of OAuth and tenant roles. The file is still a bundle, not an original TypeScript project.
 - Repairing, redeploying, or replacing the live Worker before the user asks for the switch.
-- Exports, writes, imports, bulk actions, ranking, employment decisions, photos, and biometrics.
 - Renaming the installable package `candidate-search`.
 - Moving this work into the older Candidate Search Linear project.
 - Inventing a replacement for the rejected title Lena.
@@ -46,19 +75,19 @@ The tracker is a complete Linear project in the Activi team. It is not a project
 | Issue | Workstream | Current state | Exit condition |
 | --- | --- | --- | --- |
 | [ACT-140](https://linear.app/activi/issue/ACT-140/deliver-the-complete-cloud-crm-mcp-application-scope) | Complete Cloud CRM MCP program | Backlog parent | All required children accepted or explicitly declined |
-| [ACT-141](https://linear.app/activi/issue/ACT-141/migrate-worker-to-stateless-typescript-mcp-sdk-v2) | Stateless TypeScript MCP SDK v2 | Not implemented | Exact `/mcp` route, standards-compliant lifecycle, tested transport |
+| [ACT-141](https://linear.app/activi/issue/ACT-141/migrate-worker-to-stateless-typescript-mcp-sdk-v2) | Stateless TypeScript MCP SDK v2 | Local JavaScript workshop only; hosted Worker and MySQL not deployed | New Worker, exact `/mcp` route, Hyperdrive, tested transport |
 | [ACT-142](https://linear.app/activi/issue/ACT-142/implement-oauth-21-tenant-isolation-and-tool-scopes) | OAuth 2.1, tenant isolation, roles/scopes | Not implemented; release blocker | Negative auth matrix fails closed per request and tool |
 | [ACT-143](https://linear.app/activi/issue/ACT-143/reconcile-worker-source-provenance-and-deployable-baseline) | Worker provenance and reproducible baseline | Downloaded bundle exists; provenance open | Canonical source, lockfile, build and deployment relation verified |
 | [ACT-144](https://linear.app/activi/issue/ACT-144/harden-projections-schemas-privacy-and-restricted-query) | Schemas, projections, privacy and query hardening | Audit findings open | No `SELECT *`; explicit schemas, request/response byte limits, caps, parser/allowlists and safe errors |
-| [ACT-145](https://linear.app/activi/issue/ACT-145/build-profession-resolution-and-report-ui) | Profession resolution/report UI | Planned | Bounded, accessible UI with explicit search-expansion consent |
-| [ACT-146](https://linear.app/activi/issue/ACT-146/build-candidate-search-and-minimized-profile-ui) | Candidate search/profile UI | Planned | Filters, cursors, archive scope and minimized profile verified |
-| [ACT-147](https://linear.app/activi/issue/ACT-147/build-goal-specific-crm-statistics-ui) | Goal-specific statistics UI | Planned | Each metric has defined semantics, source, freshness and bounds |
-| [ACT-148](https://linear.app/activi/issue/ACT-148/build-safe-assignment-and-order-ui) | Assignment/order UI | Planned | Explicit projection and tenant-safe bounded result UI |
-| [ACT-149](https://linear.app/activi/issue/ACT-149/build-company-search-ui) | Company-search UI | Planned | Explicit schema, bounded filters and accessible result UI |
-| [ACT-150](https://linear.app/activi/issue/ACT-150/build-admin-only-schema-explorer-and-restricted-crm-query-console) | Admin schema explorer and `crm_query` | Planned; privileged | Dedicated scope, confirmation, parser, limits, timeout, rate limit and audit |
-| [ACT-151](https://linear.app/activi/issue/ACT-151/design-and-gate-typesafe-semantic-capabilities) | TypeSafe semantic capabilities | Decision/design gate | Contract, privacy, calibration and mandatory human review approved |
-| [ACT-152](https://linear.app/activi/issue/ACT-152/decide-and-design-exports-writes-imports-and-bulk-actions) | Exports, writes, imports, bulk actions | Decision gate; no implementation authority | Product, permission, audit, rollback and legal design approved |
-| [ACT-153](https://linear.app/activi/issue/ACT-153/decide-legal-and-product-boundaries-for-ranking-employment-decisions-photos-and-biometrics) | Ranking, employment decisions, photos, biometrics | Legal/product gate; may be rejected | Written approval or explicit rejection before any real-data work |
+| [ACT-145](https://linear.app/activi/issue/ACT-145/build-profession-resolution-and-report-ui) | Profession resolution/report UI | Included, phase 2; not built | Bounded, accessible UI with explicit search-expansion consent |
+| [ACT-146](https://linear.app/activi/issue/ACT-146/build-candidate-search-and-minimized-profile-ui) | Candidate search/profile UI | Included, phase 2; not built | Filters, cursors, archive scope and minimized profile verified |
+| [ACT-147](https://linear.app/activi/issue/ACT-147/build-goal-specific-crm-statistics-ui) | Goal-specific statistics UI | Included, phase 2; not built | Each metric has defined semantics, source, freshness and bounds |
+| [ACT-148](https://linear.app/activi/issue/ACT-148/build-safe-assignment-and-order-ui) | Assignment/order UI | Included, phase 2; not built | Explicit projection and tenant-safe bounded result UI |
+| [ACT-149](https://linear.app/activi/issue/ACT-149/build-company-search-ui) | Company-search UI | Included, phase 2; not built | Explicit schema, bounded filters and accessible result UI |
+| [ACT-150](https://linear.app/activi/issue/ACT-150/build-admin-only-schema-explorer-and-restricted-crm-query-console) | Admin schema explorer and `crm_query` | Included, phase 2; not built; privileged | Dedicated scope, confirmation, parser, limits, timeout, rate limit and audit |
+| [ACT-151](https://linear.app/activi/issue/ACT-151/design-and-gate-typesafe-semantic-capabilities) | TypeSafe semantic capabilities | Included, phase 3; not built | Contract, privacy, calibration and mandatory human review recorded before code |
+| [ACT-152](https://linear.app/activi/issue/ACT-152/decide-and-design-exports-writes-imports-and-bulk-actions) | Exports, writes, imports, bulk actions | Included, phase 4; not built | Product, permission, audit, rollback and legal design recorded before real-data work |
+| [ACT-153](https://linear.app/activi/issue/ACT-153/decide-legal-and-product-boundaries-for-ranking-employment-decisions-photos-and-biometrics) | Ranking, employment decisions, photos, biometrics | Included, phase 5; not built | Included on 6 October 2026. Design and legal review still required before real photos or biometric data |
 | [ACT-154](https://linear.app/activi/issue/ACT-154/add-inspector-evals-observability-release-and-documentation-gates) | Inspector, evals, observability, release and docs | Partial setup; endpoint returns 401 | Reproducible sanitized evidence and release gates pass |
 
 ## Product boundary
@@ -67,22 +96,20 @@ Normal filtering by name, age, profession, language, language level and archive
 state belongs to `crm_search_kandidaten`. `crm_query` is not required for that
 flow. It is included only as a separately authorized administrative fallback.
 
-The requested broader scope is fully represented above. Representation does
-not authorize implementation of mutations, exports, bulk operations,
-employment ranking/rejection, photos, or biometrics. Those items stay blocked
-until their issue-specific gates are approved.
+The requested broader scope is fully represented above. On 6 October 2026 the user included own screens, TypeSafe scoring, writes/export/import, and ranking/photos/biometrics on the new server. That decision does not build them and does not put them in phase 1. Phases 4 and 5 still need their design before real-data work. Linear issue text was not changed in this update.
 
 ## Dependencies and recommended order
 
-The order below is the current build decision from 5 October 2026. It replaces the earlier plan that started by reconciling the downloaded Worker snapshot.
+The first four steps were set on 5 October 2026. Steps 5 through 8 were added on 6 October 2026. This order replaces the earlier plan that started by reconciling the downloaded Worker snapshot.
 
 1. Build a new read-only server beside the live Worker (`ACT-141`), connected to the existing MySQL database. Do not repair or redeploy the current Worker.
-2. Keep the first version to candidates, companies, orders, and statistics. Test it with real quotas and real read queries. Synthetic Inspector cases are not the only acceptance.
+2. Keep the first version to candidates, companies, orders, statistics, the profession report, allowed table listing and description, candidate lists paged at 50 with no server-imposed end, exact counts that do not stop at 50, and read-only free SQL with the same split. Test it with real quotas and real read queries. Synthetic Inspector cases are not the only acceptance.
 3. Carry the security foundations that this new server needs (`ACT-142`, `ACT-144`) before exposing broader modules.
 4. Leave `ACT-143` as an open provenance gap for the downloaded snapshot. It does not block the new server.
-5. Build the read-only user modules (`ACT-145` through `ACT-149`) after the new server can read the four areas above.
-6. Build the privileged query module only after its security gate (`ACT-150`).
-7. Decide semantic and high-risk future capabilities (`ACT-151` through `ACT-153`).
+5. Phase 2: build the own screens (`ACT-145` through `ACT-149`) after the new server can read the four areas above. Build the privileged query screen only after its security gate (`ACT-150`).
+6. Phase 3: build scoring after the user chooses the engine (`ACT-151`). Core search must keep working without it.
+7. Phase 4: build writes, export, and import (`ACT-152`) only after the permission, audit, and rollback design exists.
+8. Phase 5: build ranking, photos, and biometrics (`ACT-153`) only after the design and legal review exist. Do not run that phase on real photos or biometric data before then.
 
 ## Known blockers
 

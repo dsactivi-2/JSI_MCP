@@ -2,8 +2,7 @@
 
 ## Status
 
-Expanded planning scope approved on 5 October 2026. Implementation and
-production authorization remain open. The Linear tracker is https://linear.app/activi/project/lena-1333951b31fb. Its title Lena was rejected on 5 October 2026 and is not the product name. The scope root is
+Expanded planning scope approved on 5 October 2026. A local phase-1 workshop exists under server/src and is covered by local tests. It is not connected to MySQL and has no public address. Decision DEC-2026-10-06-mcp-use requires the delivered server to be built with mcp-use and hosted on Cloudflare Containers against the existing MySQL database. Manufact is not used. Nothing has been deployed. The Linear tracker is https://linear.app/activi/project/lena-1333951b31fb. Its title Lena was rejected on 5 October 2026 and is not the product name. The scope root is
 [ACT-140](https://linear.app/activi/issue/ACT-140/deliver-the-complete-cloud-crm-mcp-application-scope).
 
 ## Value Proposition
@@ -11,9 +10,10 @@ production authorization remain open. The Linear tracker is https://linear.app/a
 Provide a modular visual companion for conversational CRM work. The first
 modules cover candidate search, profiles, profession resolution, profession
 reports, companies, orders, and statistics. A separate administrative module
-covers schema guidance and a strictly restricted `crm_query` console. Planned
-semantic, export, mutation, employment-decision, photo, and biometric
-capabilities remain behind explicit technical, human, and legal gates.
+covers schema guidance and a strictly restricted `crm_query` console. Own
+screens, TypeSafe scoring, writes/export/import, and ranking, photos, and
+biometrics are included in later phases of the same new server. They are not
+in the first build, and they are not implemented.
 
 ### Target users
 
@@ -88,7 +88,14 @@ The component is not a standalone dashboard and does not fetch CRM data on load.
 - Require an explicit user action before a resolved variant broadens or changes
   the candidate search.
 - Use `crm_beruf_report` to show the unique candidate count, bounded top
-  positions, profession groups, and language distribution.
+  positions, profession groups, and a language distribution.
+- The report searches literal position text with LIKE. It is not a verified
+  profession ID. Archived status 3 stays excluded unless requested.
+- Group counts may add up to more than the unique total, because one candidate
+  can match more than one term.
+- Top positions default to 15 and never exceed 50.
+- A language breakdown is included only when the user names the language.
+  Do not default it to German or `Njemački`.
 - Present the report as a compact summary, list, or small chart, not a dashboard.
 
 ### End state
@@ -126,10 +133,10 @@ bulk actions, ranking, rejection, biometric processing, or external evaluation.
 
 | Tool | UI role | Preconditions |
 | --- | --- | --- |
-| `crm_search_kandidaten` | Search results, scope summary, exact count, cursor pagination | Remove prohibited citizenship filtering; minimize candidate projection; add output schema and annotations |
+| `crm_search_kandidaten` | Search results, scope summary, exact count, cursor pagination | Keep the `eu_buerger` filter and the birth date in search rows; minimize the other candidate fields; add output schema and annotations |
 | `crm_kandidat_profile` | Deliberately loaded candidate detail | Replace `SELECT k.*` with an explicit field allowlist and authorization-aware projection |
 | `crm_resolve_beruf` | Profession variants and counts | Bounded result size; no automatic expansion of a search |
-| `crm_beruf_report` | Unique count, top positions, groups, language distribution | Bounded lists; explicit semantics for overlapping groups |
+| `crm_beruf_report` | Unique count, top positions, groups, language distribution | LIKE on position text; groups may overlap the unique total; top positions default 15 and cap at 50; language breakdown only when a language is named, never default German |
 | `crm_search_companies` | Focused company search | Explicit output projection, tenant scope, bounded filters |
 | `crm_search_nalozi` | Focused assignment/order search | Replace `SELECT *`; approve fields and authorization |
 | `crm_stats` | Goal-specific summaries and small visualizations | Define exact semantics, sources, caps, and freshness |
@@ -139,9 +146,9 @@ bulk actions, ranking, rejection, biometric processing, or external evaluation.
 | Tool | UI role | Mandatory gate |
 | --- | --- | --- |
 | `crm_search_guide` | Explain available schema and safe query patterns | Admin/query scope; no secrets or hidden policy data |
-| `crm_list_tables` | List allowed relations | Admin/query scope; tenant-safe metadata only |
-| `crm_describe_table` | Describe allowed fields | Admin/query scope; allowlisted relations only |
-| `crm_query` | Execute a constrained read-only query | Dedicated admin scope, explicit confirmation, parser/allowlists, read-only principal, limits, timeout, rate limit, and audit |
+| `crm_list_tables` | List allowed relations | Yes on the new server; allowed relations only |
+| `crm_describe_table` | Describe allowed fields | Yes on the new server; allowlisted relations only |
+| `crm_query` | Execute a constrained read-only query | Yes on the new server; one read-only SELECT. A list is paged at 50. A count returns the full number and does not stop at 50. `LIMIT 200` is not appended. Not the normal candidate search |
 
 `crm_query` is included in the product plan, but it is not the ordinary candidate
 filter. Normal name, age, profession, language, level, and archive filtering uses
@@ -162,12 +169,12 @@ filter. Normal name, age, profession, language, level, and archive filtering use
 | Company search | Planned module | `ACT-149` |
 | Assignment/order search | Planned module | `ACT-148`; projection hardening first |
 | Generic CRM statistics | Planned goal-specific module | `ACT-147` |
-| Restricted SQL fallback | Planned admin-only module | `ACT-150`; never ordinary candidate filtering |
-| Table/schema exploration | Planned admin-only module | `ACT-150` |
-| TypeSafe semantic toolset | Planned, not exposed | `ACT-151`; external contract and policy open |
-| Exports, writes, imports, bulk actions | Decision-gated | `ACT-152`; no implementation authorization yet |
-| Automated ranking/rejection and employment recommendations | Legal/product decision-gated | `ACT-153`; no implementation authorization yet |
-| Photo or biometric processing | Legal/product decision-gated | `ACT-153`; may be rejected entirely |
+| Restricted SQL fallback | Yes on the new server; lists paged at 50, counts complete | `ACT-150` remains the later visual console; never ordinary candidate filtering |
+| Table/schema exploration | Yes on the new server | `crm_list_tables` and `crm_describe_table`; the visual console stays `ACT-150` |
+| TypeSafe semantic toolset | Yes, phase 3 | `ACT-151`; included on 6 October 2026; not built; core search works without it |
+| Exports, writes, imports, bulk actions | Yes, phase 4 | `ACT-152`; included on 6 October 2026; design still required before code |
+| Automated ranking/rejection and employment recommendations | Yes, phase 5 | `ACT-153`; included with photos and biometrics; no silent automatic rejection |
+| Photo or biometric processing | Yes, phase 5 | `ACT-153`; included; no evidenced legal review yet, so not authorized on real photos |
 
 ## Data Contract and Privacy
 
@@ -176,8 +183,24 @@ filter. Normal name, age, profession, language, level, and archive filtering use
   schemas.
 - Tool result `_meta` may carry component-only presentation data but is not an
   authorization boundary and must not carry credentials.
-- Default candidate results exclude email, phone, address, birth date,
-  documents, internal notes, citizenship, and other unnecessary personal data.
+- Candidate search rows include the birth date `kandidat_datumrodjenja`.
+  This was decided on 6 October 2026. An age-only count does not return that date.
+- Age is calculated only from that birth date, in completed years. An empty birth
+  date has no age and does not match an age filter. A future birth date does not
+  produce an age. If only one age bound is given, the other bound stays at the
+  current handler defaults, 0 and 150. The user accepted that on 6 October 2026.
+  An explicit from/to uses exactly those bounds.
+- A candidate list returns 50 rows per page. The server does not add a default
+  limit that ends the result and does not return 2000 candidates in one response.
+  Further pages continue until no rows remain. A count returns the full number
+  and does not stop at 50.
+- Candidate search accepts `eu_buerger`. `true` means
+  `kandidat_drzavljanstvo_vrsta LIKE 'EU%'`. `false` follows the current handler
+  and also matches an empty citizenship field. On 6 October 2026 the user accepted that:
+  searching for non-EU citizens includes people with no citizenship entered.
+  Residence or work location remains a separate filter.
+- Default candidate results still exclude email, phone, address, documents,
+  internal notes, and the raw citizenship column.
 - A minimized profile exposes only fields required for the authorized user goal.
 - The server enforces user, tenant, role, scope, archive, row-limit, and field
   rules before returning data.
@@ -203,7 +226,7 @@ filter. Normal name, age, profession, language, level, and archive filtering use
 1. Remove URL query-token authentication.
 2. Replace shared bearer authentication with reviewed OAuth 2.1 account linking.
 3. Enforce subject, tenant, role, audience, expiry, revocation, and tool scopes.
-4. Remove `eu_buerger` and citizenship-based filtering.
+4. Keep the `eu_buerger` filter on candidate search. Do not add a free filter or default output for the raw citizenship column. Gender, religion, health data, and ethnic origin stay prohibited.
 5. Replace `SELECT *` in profile and assignment paths with explicit projections.
 6. Move `crm_query` behind a separate admin/query scope and harden it before UI exposure.
 7. Add explicit output schemas and accurate read-only annotations.
@@ -220,7 +243,7 @@ filter. Normal name, age, profession, language, level, and archive filtering use
   insufficient-scope credentials fail closed.
 - Candidate search UI renders synthetic results and pagination correctly.
 - Server acceptance also includes real read queries and real quotas against the connected MySQL database. Synthetic UI rendering does not replace that check.
-- Candidate profile UI never renders prohibited fields.
+- Candidate profile UI never renders gender, religion, health data, ethnic origin, or the raw citizenship column. The search list includes the birth date, and a profile may include that same field.
 - Profession resolution never changes the active search without explicit user
   action.
 - Profession report labels overlapping groups and bounded lists accurately.
@@ -228,22 +251,29 @@ filter. Normal name, age, profession, language, level, and archive filtering use
 - MCP Apps sandbox and ChatGPT developer-mode tests cover light/dark theme,
   narrow/wide layouts, empty states, partial data, large result counts, errors,
   and keyboard navigation.
-- All 39 existing plugin evaluation cases are preserved and expanded with
+- The existing plugin evaluation cases are preserved, including the profession-report case, and expanded with
   transport, schema, OAuth, cursor, privacy, and UI cases.
 
-## Gated Future Capabilities
+## Later phases
 
-The following items are recorded in the roadmap because the user requested a
-complete scope. Their presence here is not permission to implement or test them
-with real data:
+Decision `DEC-2026-10-06-phased-scope`, 6 October 2026. All eight points are
+included on the new server. Inclusion is not implementation. No server code
+for these points exists in this repository, and the live Worker is unchanged.
 
-- TypeSafe-assisted matching, duplicate detection, profession classification,
-  search-intent evaluation, and note review (`ACT-151`).
-- Exports, CRM writes, imports, and bulk actions (`ACT-152`).
-- Automated ranking, rejection, or employment recommendations (`ACT-153`).
-- Photo processing and biometric comparison (`ACT-153`).
+Phase 1, the first build:
 
-Each requires an approved contract, minimal scopes, data minimization,
-confirmation behavior, auditability, human review, and applicable legal/privacy
-approval. Until those gates are satisfied, the implemented product boundary
-remains read-only and non-biometric.
+- Birth date in every candidate search row.
+- The `eu_buerger` filter. `false` also includes an empty citizenship field.
+- Read-only `crm_query`. A list is paged at 50. A count returns the full number.
+- `crm_list_tables` and `crm_describe_table`.
+
+Later phases, included and not built:
+
+- Phase 2: own screens for the read tools (`ACT-145` through `ACT-149`). The visual admin console remains `ACT-150` and still waits for its security gate.
+- Phase 3: TypeSafe scoring, including matching, duplicate hints, profession classification, search-intent evaluation, and note review (`ACT-151`). Core CRM search works without it.
+- Phase 4: writes, export, and import, including the bulk actions already grouped in `ACT-152`.
+- Phase 5: ranking, photos, and biometrics, including the employment-decision scope already grouped in `ACT-153`.
+
+The earlier wording that phases 3 through 5 were only decision gates, and might be rejected, is replaced by this decision. A written legal review, permission model, audit trail, and rollback design are still not evidenced. That missing design does not take the points back out. It means phases 4 and 5 are not authorized to run on real personal data, photos, or biometric data until that design exists.
+
+Gender, religion, health data, and ethnic origin stay prohibited in every phase. Ranking must not use them. Photos must not be used to infer them. A disagreement between a semantic score and the user still goes to a person. These phases do not add silent automatic rejection or silent record merges.

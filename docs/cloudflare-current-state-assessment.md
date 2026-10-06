@@ -1,4 +1,6 @@
 # Cloudflare-Gesamtbewertung: CRM-MCP-Worker
+> **Nachfolge, 6. Oktober 2026:** Die aktive Planung behält für den neuen Server das Geburtsdatum in der Kandidatensuchliste und den Filter `eu_buerger`. Diese beiden Entfernungsempfehlungen sind ersetzt. `SELECT *`, das Token in der URL und die übrigen Datenschutzverbote bleiben. Die Entscheidung steht in [changes.md](changes.md).
+
 > **Name note, 5 October 2026:** The user rejected the working title Lena. These pages keep the dated findings. Current names and the transition decision are in [project.md](project.md) and [memory.md](memory.md). The Linear title has not been renamed because no replacement name was given.
 
 > **Statushinweis vom 5. Oktober 2026:** Dieser Bericht bleibt ein datierter

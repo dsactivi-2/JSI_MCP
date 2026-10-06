@@ -22,9 +22,9 @@ The folder name is MCP Plugin 2. The installable package remains candidate-searc
 
 ## Update 0.1.0-beta.2
 
-The package follows the updated project data policy and the prepared Desktop MCP guide: distinct counts, literal profession searches unless mapping is authorized, listening-based language minima, same-record education filters, valid age calculations, and minimal field retrieval. Prohibited attributes remain prohibited even when an older live schema exposes them. Both manifest versions are synchronized.
+The package follows the updated project data policy and the prepared Desktop MCP guide: distinct counts, literal profession searches unless mapping is authorized, listening-based language minima, same-record education filters, valid age calculations, and minimal field retrieval. On 6 October 2026 the new server was decided to keep the birth date in candidate search rows and the eu_buerger filter. Gender, religion, health data, ethnic origin, and the raw citizenship column stay prohibited. Both manifest versions are synchronized.
 
-The connected MCP guide was read on 2026-10-02. It still documents citizenship, and candidate search still exposes `eu_buerger`; full profile output has not been verified. A downloaded production Worker bundle now exists under `worker-source/`, but it is not a canonical reproducible source tree. The new guide assets and tool contracts define the required change, and no server deployment has occurred. Field projection, exact count modes, output redaction, authorization, and SQL enforcement require implementation and verification on the server. The plugin cannot establish those guarantees through instructions.
+The connected MCP guide was read on 2026-10-02. It still documents citizenship, and candidate search still exposes `eu_buerger`; full profile output has not been verified. A downloaded production Worker bundle now exists under `worker-source/`, but it is not a canonical reproducible source tree. The new guide assets and tool contracts now keep the birth date and the eu_buerger filter. No server deployment has occurred. Field projection, exact count modes, output redaction, authorization, and SQL enforcement require implementation and verification on the server. The plugin cannot establish those guarantees through instructions.
 
 ## Beta authentication
 
@@ -68,9 +68,4 @@ Test the endpoint with MCP Inspector, then exercise every case in `tests/evals.j
 
 ## Current implementation versus planned scope
 
-The deployed beta remains tool-only and primarily read-only. The planned
-scope includes MCP Apps views for current CRM tools and separately gated future
-capabilities. Nothing in the roadmap may be advertised as implemented until its
-server tool, authorization, UI, and tests exist. Photos, biometrics, automated
-employment decisions, exports, and CRM mutations additionally require explicit
-human and legal approval before implementation or real-data testing.
+The deployed beta remains tool-only and primarily read-only. The new server includes eight points, split into phases in docs/open-work.md. Phase 1 is the read server. Own screens, TypeSafe scoring, writes/export/import, and ranking/photos/biometrics are included in later phases. Nothing in the roadmap may be advertised as implemented until its server tool, authorization, UI, and tests exist. Phases 4 and 5 still need their design, and a legal review that has not been evidenced, before real-data testing.

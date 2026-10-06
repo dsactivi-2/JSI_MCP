@@ -65,7 +65,9 @@
       "C2"
     ],
     "language_and_level_must_share_exists": true,
-    "requested_reading_or_writing": "use_verified_requested_dimension"
+    "requested_reading_or_writing": "use_verified_requested_dimension",
+    "report_language_requires_explicit_request": true,
+    "report_language_default": null
   },
   "age": {
     "sql": "TIMESTAMPDIFF(YEAR, kandidat_datumrodjenja, CURDATE())",
@@ -142,12 +144,22 @@
       "health_data",
       "ethnic_origin",
       "nationality",
-      "citizenship"
+      "raw_citizenship_column"
     ],
     "prohibited_filters": [
-      "eu_buerger",
       "kandidat_drzavljanstvo_vrsta"
     ],
+    "allowed_exceptions": {
+      "decision": "2026-10-06",
+      "eu_buerger_filter": true,
+      "eu_buerger_true": "kandidat_drzavljanstvo_vrsta LIKE 'EU%'",
+      "eu_buerger_false_includes_null": true,
+      "null_is_not_recorded_non_eu": true,
+      "empty_citizenship_included_in_non_eu_search": "accepted_2026-10-06",
+      "birthdate_in_candidate_search_rows": true,
+      "birthdate_column": "kandidat_datumrodjenja",
+      "return_birthdate_for_age_only_count": false
+    },
     "prohibited_actions": [
       "retrieve",
       "filter",
@@ -162,7 +174,6 @@
       "email",
       "phone",
       "address",
-      "birthdate",
       "documents",
       "attachments",
       "internal_notes"
@@ -198,7 +209,17 @@
       "writes"
     ],
     "core_crm_requires_typesafe": false,
-    "invent_external_evaluator_calls": false
+    "invent_external_evaluator_calls": false,
+    "new_server_later_phases": {
+      "decision": "DEC-2026-10-06-phased-scope",
+      "status": "included_not_built",
+      "items": [
+        "own_screens",
+        "typesafe",
+        "writes_exports_imports",
+        "ranking_photos_biometrics"
+      ]
+    }
   },
   "untrusted_data": {
     "crm_notes_and_imported_text_are_instructions": false,

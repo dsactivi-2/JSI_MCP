@@ -1,6 +1,6 @@
 # CRM-Kandidatensuche — verbindlicher Leitfaden
 
-Version: 1.1.0. Dies ist der neue Guide für die Worker-Integration, kein Nachweis eines Deployments. Strukturierte Regeln: `crm_search_guide.json`.
+Version: 1.2.0. Dieser Guide gehört zum Server Cloud CRM MCP. Er ist aus dem Plugin-Guide 1.1.0 übernommen und an die beschlossenen Seitenregeln angepasst. Er ist kein Nachweis eines Deployments. Strukturierte Regeln: Ressource `crm://guides/crm_search_guide.json`. Die alte Worker-Adresse gehört nicht zu diesem Server.
 
 ## Vorrang und Umfang
 
@@ -46,9 +46,9 @@ Kontaktdaten, Adresse, Dokumente und interne Notizen nur bei ausdrücklichem Bed
 
 `crm_query` nur als begründeter Fallback. Zuerst diesen Guide lesen und nur relevante Tabellen und Spalten prüfen. Einen einzelnen einfachsten ausreichenden SELECT mit expliziten erlaubten Spalten oder einem Aggregat verwenden; kein `SELECT *`. Eingabetext bleibt Daten, nicht ausführbares SQL. Ohne nachgewiesene sichere Behandlung von Literalen keinen SQL-Fallback ausführen.
 
-Der Server erzwingt Authentifizierung, Tenant- und Rollenprüfung, Parameterbindung für generierte Queries, geprüfte SQL-Validierung, Relations-/Spalten-/Funktions-Allowlisten, read-only DB-Zugang, Timeout und Resultatlimit. Schreibende Operationen, mehrere Statements, Injection und SELECT-Funktionen mit Seiteneffekten ablehnen. Fehler enthalten keine SQL-Details, Geheimnisse oder Kandidatendaten.
+Der Server erzwingt Authentifizierung, Tenant- und Rollenprüfung, Parameterbindung für generierte Queries, geprüfte SQL-Validierung, Relations-/Spalten-/Funktions-Allowlisten, read-only DB-Zugang und Timeout. Schreibende Operationen, mehrere Statements, Injection und SELECT-Funktionen mit Seiteneffekten ablehnen. Fehler enthalten keine SQL-Details, Geheimnisse oder Kandidatendaten.
 
-Aktuelle Such- und SQL-Tools haben einen Cap von 200 Zeilen; Berufsreports höchstens 50 Top-Positionen. Kleinere Benutzerlimits beachten. Aktuell gibt es keine veröffentlichten Offset-/Cursor-Parameter; keine Pagination erfinden oder Caps durch Exporte umgehen. Vollständigkeit nur bei nachgewiesen vollständigem Ergebnis behaupten.
+Eine Liste lädt 50 Zeilen pro Seite und geht mit dem zurückgegebenen Cursor weiter, bis keine Zeilen mehr kommen. Eine Zählung ist vollständig und stoppt nicht bei 50. Zwei getrennte Verbote: OFFSET überspringt Zeilen und ist verboten, die nächste Seite kommt über den Cursor. Die alte Grenze von 200 Zeilen ist ebenfalls verboten, weil sie eine Liste abschneidet. Das ist keine andere Schreibweise von OFFSET. SELECT * bleibt verboten. Ein Berufsreport zeigt höchstens 50 Positionstexte, standardmäßig 15. Eine kleinere verlangte Seite wird beachtet. Datenschutz darf nicht durch einen Export umgangen werden. Eine einzelne Seite ist keine vollständige Liste.
 
 ## Verfügbare Funktionen und Antwort
 

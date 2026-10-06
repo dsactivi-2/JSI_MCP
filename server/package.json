@@ -4,7 +4,9 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "inspector": "./scripts/start-inspector.sh"
+    "inspector": "./scripts/start-inspector.sh",
+    "test": "node --test test/*.test.js",
+    "start": "node src/main.js"
   },
   "dependencies": {
     "@modelcontextprotocol/server": "2.0.0",

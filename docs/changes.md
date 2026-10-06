@@ -1,5 +1,250 @@
 # Documentation change evidence
 
+## 6 October 2026 — Manufact deploy is online
+
+**Trigger:** The user approved the Manufact login and asked to continue.
+
+**Before:** The Manufact device login was waiting. No public URL existed.
+
+**After:** The server is online at https://calm-forge-hk9rc.run.mcp-use.com/mcp. Manufact server id 9e075f18-34d7-4a71-a3e9-88868821addb, deployment 264d9053-8bbb-4738-a9aa-17d0b856e0cc, status running. A call without the bearer token returned 401. A call with CRM_MCP_SERVER_TOKEN returned initialize 200 and the eleven read tools. No database URL is set. /mcp/inspector returned 404, so the Inspector is not mounted on the public server. The dashboard page is https://manufact.com/calm-forge-hk9rc.
+
+**Checked:** Manufact build log said server stable, plus the two HTTP calls above. Not checked: a real MySQL query.
+
+
+## 6 October 2026 — Manufact is the host for now
+
+**Trigger:** The user said to use Manufact for now.
+
+**Before:** The internet host was not settled.
+
+**After:** Manufact is the temporary host. Cloudflare stays a later option. The server still goes online before the new database is attached. The mcp-use CLI was not logged in. A device login was started and is waiting for the user. No deploy has finished.
+
+**Checked:** `mcp-use whoami` returned not logged in. Not checked: a finished Manufact deployment or a public URL.
+
+
+## 6 October 2026 — host choice reopened
+
+**Trigger:** The user said the host decision was not clear and had been closed on the assistant side. The server must be online, not local. The database connection comes after hosting. The mcp-use Inspector should connect to that online server.
+
+**Before:** Active notes said Cloudflare Containers was the host and Manufact was not used. The gap before deploy was described as the database connection plus the Cloudflare Container.
+
+**After:** mcp-use stays the building kit. The internet host is not settled. No deploy was run. The server may go online before a database URL exists. The Inspector is not connected, because there is no public address yet.
+
+**Checked:** cloud-crm-mcp has no Dockerfile and no Wrangler file. Not checked: a Cloudflare account, a Manufact account, or a live URL.
+
+## 6 October 2026 — eval list copied into the new server tests
+
+**Trigger:** The user asked why the plugin is still needed and why evals.json was not copied into the new server.
+
+**Before:** The evaluation list lived only in candidate-search/tests/evals.json. One case said the server had no pagination.
+
+**After:** An adapted copy is cloud-crm-mcp/test/evals.json. It expects cursor pages, rejects OFFSET separately from the old 200-row cap, and is marked as a test specification. It is not served as a skill. The original plugin remains the live connection to the old Worker because the new server has no public address.
+
+**Checked:** The adapted file is read by cloud-crm-mcp tests. It was not run against MySQL.
+
+
+## 6 October 2026 — offset and the 200-row cap stay separate
+
+**Trigger:** The user asked to keep OFFSET and the old 200-row cap as two different bans, and said the scoring engine is still being checked.
+
+**Before:** Free SQL rejected a LIMIT above 50, but it did not reject OFFSET. Active docs named TypeSafe as the phase-3 engine.
+
+**After:** Free SQL rejects OFFSET with its own error. A LIMIT of 200 still fails because a page has at most 50 rows, and that error does not mention OFFSET. The next page still uses the cursor. Scoring stays in phase 3, but the engine is not chosen. The user is checking TypeSafe and a Cloudflare model they called Clef. That product name is not verified, and neither engine is installed.
+
+**Checked:** `npm test` in `cloud-crm-mcp` passed with 8 tests. Not checked: MySQL, Cloudflare, or the product named Clef.
+
+## 6 October 2026 — plugin skill and guides embedded
+
+**Trigger:** The user asked to put the ChatGPT plugin schemas, plans, guides, and skills into the new MCP server.
+
+**Before:** Those files lived only in `candidate-search/`. The server tool `crm_search_guide` returned five short rules. The plugin connection still names the old Worker.
+
+**After:** `cloud-crm-mcp/skills/crm-kandidatensuche/` serves the skill, its references, and guide version 1.2.0. mcp-use discovers one skill and seven skill files. The server also exposes `crm://guides/crm_search_guide.json` and `crm://guides/crm_search_guide.md`. The embedded copy does not contain the old Worker address. Lists stay at 50 rows per page, and counts stay complete. The original plugin files are unchanged and still describe the live connection. `evals.json` was not copied. No database URL is set and nothing was deployed.
+
+**Checked:** `npm test` passed with 7 tests. `npm run typecheck` passed. Skill discovery returned one clean skill. Not checked: MySQL, Cloudflare Containers, or a public URL.
+
+## 6 October 2026 — separate read server started
+
+**Trigger:** The user said to build the MCP server and to keep its infrastructure completely separate from the old server, including a different Hyperdrive if one is needed. The pasted Server Manager page is not part of that server.
+
+**Before:** `cloud-crm-mcp/` was a blank mcp-use app. The old workshop lived under `server/src`.
+
+**After:** `cloud-crm-mcp` registers the phase-1 read tools, including language filtering, profession variants, the search guide, and a next page for companies and orders. It refuses the old Worker host and the old Hyperdrive id. No database URL is set, no query ran, and nothing was deployed. `npm test` passed with 5 tests. `npm run typecheck` passed.
+
+**Checked:** `npm test` and `npm run typecheck` in `cloud-crm-mcp`. Not checked: MySQL, Cloudflare Containers, or a public URL.
+
+## 6 October 2026 — mcp-use kit installed
+
+**Trigger:** The user asked to install mcp-use from its getting-started page.
+
+**Before:** The decision named mcp-use, but the repository had no mcp-use project.
+
+**After:** `cloud-crm-mcp/` was created with `create-mcp-use-app`  template `blank`, package `mcp-use` 2.7.3, and npm install. It registers no tools. `npm run dev` was not started. `npm run deploy` was not run. That script calls `mcp-use deploy`, which is the Manufact path and is not the chosen Cloudflare host.
+
+**Checked:** The scaffold command exited 0 and `package.json` names `mcp-use` 2.7.3. No server process and no deploy.
+
+## 6 October 2026 — mcp-use hosted on Cloudflare Containers
+
+**Trigger:** The user said to use the chosen kit to build the server and deploy and host it on Cloudflare.
+
+**Before:** DEC-2026-10-06-mcp-use chose mcp-use without Manufact, but no host. The notes said a normal Worker cannot run the Docker server.
+
+**After:** The host is Cloudflare Containers. A Worker is the front door. The mcp-use image from its Dockerfile is the container. Manufact stays out. Containers are part of the Workers Paid plan. The published included amounts are 25 GiB-hours memory, 375 vCPU-minutes, and 200 GB-hours disk per month, then usage charges. Nothing was deployed. mcp-use's own docs do not list Cloudflare. Hyperdrive access from the container was not tested.
+
+**Sources checked:** https://developers.cloudflare.com/containers/ and https://developers.cloudflare.com/containers/platform/pricing/
+
+**Checked:** Documentation review follows this edit. Not checked: a container deploy or a MySQL connection.
+
+## 6 October 2026 — mcp-use without Manufact
+
+**Trigger:** The user chose mcp-use and asked why Manufact was required.
+
+**Before:** DEC-2026-10-06-hosted-stack chose the official TypeScript MCP SDK on a new Cloudflare Worker and rejected mcp-use because its easy host is Manufact.
+
+**After:** Decision DEC-2026-10-06-mcp-use replaces that framework choice. mcp-use is the server framework. Manufact is not required and is not chosen. The self-host guide says to run the built server in Docker on infrastructure the project controls, with TLS, a public address, and platform-managed secrets. No host was selected. Nothing was deployed. MySQL access from outside Hyperdrive remains unchecked.
+
+**Source checked:** https://docs.mcp-use.com/v2/typescript/server/deployment/self-hosted.md
+
+**Checked:** Documentation review follows this edit. Not checked: a Docker build, a public deploy, or a MySQL connection.
+
+## 6 October 2026 — mcp-use objection does not change the host
+
+**Trigger:** The user said they are not a coder and that mcp-use would spare them from connecting and wiring the server themselves.
+
+**Before:** DEC-2026-10-06-hosted-stack already chose the official TypeScript MCP SDK on a new Cloudflare Worker. The reason was the existing Hyperdrive door to MySQL.
+
+**After:** The decision stays. The user does not wire either option. Manufact, the easy mcp-use host, still needs a GitHub repository, a Manufact login, and its GitHub app. This folder has no Git remote. Cloudflare is already authenticated, so the new Worker does not add an account for the user. No deploy was made.
+
+**Checked:** `git remote` printed no remote. Documentation review follows this edit.
+
+## 6 October 2026 — hosted server and framework choice
+
+**Trigger:** The user said the server must be online, hosted, and connected to the live MySQL database. FastMCP was not a settled rejection. The choice among the official MCP SDK, FastMCP, and mcp-use had to be the simplest for a beginner.
+
+**Before:** The active plan already said to connect a new server to the existing MySQL database, but the only code was a local workshop. A Lena chat had recommended against FastMCP. That recommendation was not a user decision, and it was not written into the docs.
+
+**After:** Decision `DEC-2026-10-06-hosted-stack`. The delivered server is a new Cloudflare Worker beside the current one, using Hyperdrive to the existing MySQL database. The framework is the official TypeScript MCP SDK. FastMCP 4.0.5 stays a Python server with its own HTTP host. mcp-use stays a TypeScript framework whose easy public deploy is Manufact. Neither is chosen. The local workshop is not deployed and does not become the product. Phases 2 through 5 stay included behind their gates. The first online read server still lacks the language filter, follow-up pages for companies, orders, and free SQL, and the tools `crm_resolve_beruf` and `crm_search_guide`.
+
+**Sources checked:** FastMCP welcome and HTTP deployment docs, the mcp-use README and Manufact deployment page, and the existing Worker Hyperdrive binding. No new Worker was created. No live database query was run.
+
+**Checked:** Documentation review and gate after this edit. Not checked: a real deploy or a MySQL connection.
+
+## 6 October 2026 — phase 1 local read server started
+
+**Trigger:** The user said to start after the eight points were marked included.
+
+**Before:** The new server was only a plan. server/ had the specification and Inspector wrapper, no application source.
+
+**After:** server/src now contains the phase 1 read behavior: candidate search with birth date and the EU filter, 50-row pages, full counts, profession report, company and order projections, table list and describe, and read-only free SQL. A query-string token is rejected. 17 local tests pass. MySQL is not connected. Nothing was deployed, and the live Worker was not changed. Phases 2 through 5 are still not built.
+
+**Checked:** node --test in server/. The package validator was not rerun because the installable plugin files were not part of this code change.
+
+## 6 October 2026 — eight points included, build split into phases
+
+**Trigger:** The user marked the four attachment rows Ja for the new server and asked for all eight points to be written back, with the build split into phases.
+
+**Before:** Birth date, the EU-citizen filter, free read-only SQL, and list/describe tables were already Ja in phase 1. Own screens and TypeSafe were later. Writes/export/import and ranking/photos/biometrics were not planned and could still be rejected.
+
+**After:** Decision `DEC-2026-10-06-phased-scope`. All eight points are Ja on the new server. Phase 1 remains the read server. Phase 2 is own screens, including the later admin console. Phase 3 is TypeSafe. Phase 4 is writes, export, and import. Phase 5 is ranking, photos, and biometrics. None of this is built. The live Worker was not changed. Linear issue text was not changed. Phases 4 and 5 still have no evidenced legal or permission design, so they are not authorized on real personal data, photos, or biometric data. Gender, religion, health data, and ethnic origin stay prohibited.
+
+**Checked:** Active plan, handover, specification, package rules, and the prepared search guide. Historical audits were not rewritten.
+
+## 6 October 2026 — pages of 50, counts stay complete
+
+**Trigger:** The user said the new server must have no MID, including no server default. The spoken word MID is recorded as the rejected server limit. Lists must not load 2000 candidates at once. Load 50 per page. A count, such as how many matching people exist, must return the full number and must not stop at 50.
+
+**Before:** The plan said free SQL adds no limit and returns every requested row in one response.
+
+**After:** A candidate list on the new server loads 50 rows per page and continues until no rows remain. It does not add a default limit that ends the result and does not return 2000 rows at once. A count returns the full number. Read-only `crm_query` uses the same split and does not append `LIMIT 200`. The example "Männer" was not added as an allowed filter. No server code was written.
+
+
+## 6 October 2026 — the server adds no limit of its own
+
+**Trigger:** The user said the server must not set its own limit. This is not a limit on people. The result is names, lists, and data. The sentence ended unfinished at "es ist nicht".
+
+**Before:** The plan said free SQL returns one limited page so one call does not dump every row.
+
+**After:** That server-side page cap is removed. Read-only `crm_query` stays. The new server does not invent a row or person limit and does not append `LIMIT 200`. A limit applies only when the request itself contains one. The downloaded company and assignment handlers still cap at 200; that cap was not extended to free SQL. No server code was written.
+
+
+## 6 October 2026 — free SQL has no fixed end
+
+**Trigger:** The user rejected a hard end for free SQL. A response has a page limit. If more rows exist, there is another page. The result ends only when no rows remain. One call must not dump every lead.
+
+**Before:** `DEC-2026-10-06-sql-and-schema` said `crm_query` returns at most 200 rows.
+
+**After:** That total cap is replaced. Read-only `crm_query` stays on the new server. Each call returns one page. There is no fixed end at 200 and no single response of every matching row. The next page continues until the data ends. The current handler's automatic `LIMIT 200` is not copied as that end. No page size number was newly chosen. No server code was written.
+
+
+## 6 October 2026 — free SQL and table tools are yes
+
+**Trigger:** The user said free SQL and listing or describing tables must both be yes on the new server. Free SQL stays capped.
+
+**Before:** `crm_query`, `crm_list_tables`, and `crm_describe_table` were deferred with the later admin console, ACT-150.
+
+**After:** Decision `DEC-2026-10-06-sql-and-schema`. The new server includes listing and describing allowed tables, and read-only `crm_query` with at most 200 rows. Free SQL is not the normal candidate search. The visual admin console remains later. No server code was written.
+
+**Not verified:** no live query.
+
+
+## 6 October 2026 — age bounds and missing birth dates
+
+**Trigger:** The user answered the three age cases. Point 3 is acceptable. Point 1 asked how a missing birth date can be fixed. Point 2 asked which date categories can legitimately be in 2030.
+
+**Before:** The one-sided bounds 0 and 150 were described as a possible defect. Future dates were discussed only as birth dates.
+
+**After:** Decision `DEC-2026-10-06-age-bounds`. A missing lower age bound stays 0 and a missing upper bound stays 150. That is not an MCP defect. An explicit age from/to uses those exact completed years from `kandidat_datumrodjenja`. An empty birth date has no age and cannot be invented by the server. A future birth date is not an age. Work dates and any license or passport dates are separate. The handler SQL names only `kandidat_datumrodjenja`, `kri_darum_od`, and `kri_datum_do`. No live count of 2030 dates was run.
+
+**Not verified:** database contents. Both known tokens were already recorded as HTTP 401.
+
+
+## 6 October 2026 — non-EU search includes empty citizenship
+
+**Trigger:** The user asked whether a non-EU search also returns people with no citizenship entered, and said that behavior is acceptable if so.
+
+**Before:** The plan copied the handler rule but still described the empty field as an unresolved difference from a recorded non-EU citizenship.
+
+**After:** Decision `DEC-2026-10-06-non-eu-empty`. `eu_buerger=false` includes an empty citizenship field. The user accepted that. `eu_buerger=true` still means the stored value starts with `EU`. The raw citizenship column stays out of the default output.
+
+**Not verified:** no live query and no new server code.
+
+
+## 6 October 2026 — profession report keeps no default language
+
+**Trigger:** The user asked to build the described profession report into the new server.
+
+**Before:** `crm_beruf_report` was named in the plan, but the plan did not say what the new server copies. The live handler silently uses `Njemački` when no language is given.
+
+**After:** Decision `DEC-2026-10-06-beruf-report`. The new server includes `crm_beruf_report`: literal LIKE matches on `kri_pozicija`, archived status 3 excluded unless requested, a distinct candidate count, term groups that may exceed that count, and top positions with a default of 15 and a cap of 50. A listening breakdown is returned only for a language the user named. The silent German default is not copied. This is a planning decision. No server code was written.
+
+**Updated:** server/SPEC.md, docs/open-work.md, docs/memory.md, the skill query rules and tool contracts, and the prepared search guide.
+
+**Not verified:** no live CRM query and no implementation of the new server.
+
+
+## 6 October 2026 — birth date and EU filter stay on the new server
+
+**Trigger:** The user corrected the comparison. Geburtsdatum in der Suchliste and EU-Bürger filtern must both be yes for the new server.
+
+**Before:** The active plan told the new server to drop `eu_buerger` and to keep the birth date out of candidate search rows. The skill, guide, and package check enforced that prohibition.
+
+**After:** Decision `DEC-2026-10-06-search-fields`. The new server keeps `kandidat_datumrodjenja` in candidate search rows and accepts `eu_buerger`. `true` means `kandidat_drzavljanstvo_vrsta LIKE 'EU%'`. `false` also matches NULL, matching the current handler; NULL is not a recorded non-EU citizenship. The raw citizenship column, gender, religion, health data, and ethnic origin stay out. `SELECT *` and the query-string token stay out. This is a planning decision. The new server is not implemented, and the live Worker was not changed.
+
+**Updated:** server/SPEC.md, docs/open-work.md, docs/memory.md, docs/project.md, the candidate-search skill and guide, scripts/validate_package.py, candidate-search/tests/evals.json, and README.md. Historical audits keep their findings and now point at this decision.
+
+**Not verified:** no server code was written, and no live CRM query was run.
+
+
+## 5 October 2026 — bundle behavior against the plugin
+
+**Trigger:** The user said the improved Cloudflare MCP base is in this folder and asked for the project documents to be filled from the plugin and that source.
+
+**Before:** The skill told agents not to use count_only or cursor and described every search as a 200-row cap. The handover said the bundle was not the base for the new server.
+
+**After:** The local index.js hash matches the hash already recorded for the deployed script. Its candidate search implements exact counts, count_only, and cursor pages up to 1000. The same handler still filters citizenship and returns birth date. Company, assignment, and free SQL stay capped at 200. The skill rules and the roadmap now say to build on that search behavior. The instruction not to copy the birth date and eu_buerger was superseded on 6 October 2026 by DEC-2026-10-06-search-fields above. SELECT * and the query-string token stay excluded. The eleven tool names were read from this file, not from a live tools/list call.
+
+**Not verified in this pass:** a fresh download of the deployed script, and a live MCP initialize. Both local tokens were already recorded as HTTP 401.
+
 ## 5 October 2026 — live stack checked
 
 **Trigger:** The user asked to compare this handover with the other agent's notes and then verify the stack live, without guessing.

@@ -1,6 +1,8 @@
 # CRM Kandidatensuche Projektstatus und Implementierungsplan
 > **Name note, 5 October 2026:** The user rejected the working title Lena. These pages keep the dated findings. Current names and the transition decision are in [project.md](project.md) and [memory.md](memory.md). The Linear title has not been renamed because no replacement name was given.
 
+> **Nachfolge, 6. Oktober 2026:** Der neue Server behält das Geburtsdatum in der Suchliste und den Filter `eu_buerger`. Siehe [changes.md](changes.md).
+
 > **Historischer Plan — ersetzt am 5. Oktober 2026.** Der aktive Projektkontext
 > ist ersetzt. Aktuelle Quellen sind project.md, memory.md und
 > [project.md](project.md), [open-work.md](open-work.md) und

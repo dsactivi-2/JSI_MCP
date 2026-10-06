@@ -59,7 +59,11 @@ def validate(package):
     require(guide["archive"]["archived_status"] == 3 and guide["archive"]["default"] == "exclude", "Archive default mismatch")
     require(guide["counting"]["unit"] == "distinct_candidates", "Count unit mismatch")
     require(guide["languages"]["minimum_level_dimension"] == "kj_slusanje", "Language dimension mismatch")
-    require(guide["privacy"]["prohibited_filters"] == ["eu_buerger", "kandidat_drzavljanstvo_vrsta"], "Prohibited-filter contract mismatch")
+    require(guide["languages"]["report_language_requires_explicit_request"] is True and guide["languages"]["report_language_default"] is None, "Profession report must not default a language")
+    require(guide["privacy"]["prohibited_filters"] == ["kandidat_drzavljanstvo_vrsta"], "Prohibited-filter contract mismatch")
+    exceptions = guide["privacy"]["allowed_exceptions"]
+    require(exceptions["eu_buerger_filter"] is True and exceptions["birthdate_in_candidate_search_rows"] is True, "Search birth-date or EU-filter decision missing")
+    require("birthdate" not in guide["privacy"]["default_excluded_fields"], "Birth date must stay in the candidate search list")
     require(guide["limits"]["search_and_query_rows"] == 200 and guide["limits"]["report_top_positions"] == 50, "Declared tool caps mismatch")
 
     evals = parsed["tests/evals.json"]

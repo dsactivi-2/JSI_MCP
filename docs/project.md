@@ -1,6 +1,6 @@
 # Cloud CRM MCP project context
 
-Status date: 5 October 2026
+Status date: 6 October 2026
 
 ## Project identity
 
@@ -16,12 +16,9 @@ and ChatGPT. It packages the `crm-kandidatensuche` skill and connects it to the
 Cloudflare CRM MCP Worker. It can search candidates, companies, and orders and
 also exposes statistics, schema inspection, and a restricted SQL fallback.
 
-The approved planning scope is broader: a modular MCP Apps UI for every current
-tool, plus planned TypeSafe-assisted capabilities and separately gated decisions
-for exports, writes/imports/bulk actions, automated employment decisions,
-photos, and biometrics. Planning a capability does not mean it is implemented,
-verified, or approved for production data. `server/SPEC.md` is the product
-specification and `docs/open-work.md` is the current roadmap.
+The approved planning scope is broader. On 6 October 2026 the user included eight points on the new server and split the build into phases. Phase 1 is the read server: birth date in the search list, the EU-citizen filter, free read-only SQL, and list and describe tables, together with the candidate, company, order, statistics, and profession-report reads. Phase 2 is own screens. Phase 3 is a later scoring step. The engine is not chosen: the user is still checking TypeSafe and a Cloudflare model they called Clef. That product name is not verified here. Phase 4 is writes, export, and import. Phase 5 is ranking, photos, and biometrics. Inclusion does not mean implemented, verified, or cleared for production data. `server/SPEC.md` is the product specification and `docs/open-work.md` is the current roadmap.
+
+On 6 October 2026 the user required the new server to be hosted online against the live MySQL database. Decision DEC-2026-10-06-mcp-use selects mcp-use as the kit and Cloudflare Containers as the host. It replaces the earlier SDK-on-a-Worker choice in DEC-2026-10-06-hosted-stack. Manufact is not used. Nothing has been deployed.
 
 The installable package is `candidate-search/`, currently version `0.1.0-beta.2`. Its portable identity is `plugin.json`; the Codex beta connection uses `.codex-plugin/plugin.json` and `.mcp.json`.
 
@@ -60,17 +57,20 @@ source (`ACT-143`).
 
 A live read on 5 October 2026 found one newer deployment, version `0898fdb7-7d67-4fb6-a17e-2ef27f8743f6` at 04:13 UTC. Its message records an updated `WORKER_API_KEY` secret. The deployed `index.js` is byte-for-byte the local snapshot, SHA-256 `3afa3e173ad0cf604795407e8e923889ccf79da89235f74c4ae82c229e53378d`. No new server script was deployed. Both local token variables are rejected with HTTP 401.
 
+A source read of that same local file on 5 October 2026 confirms the hash and the handler behavior. The server calls itself crm-mysql 1.1.0. /health returns ok, service crm-mcp, and the current time; a direct call the same day did that, and /healthz returned 404. Candidate search has count_only and cursor pagination with a page cap of 1000. Company search, assignment search, and free SQL stay at a 200-row cap. The candidate handler still accepts eu_buerger and returns the birth date. On 6 October 2026 the user decided the new server keeps both: the birth date in the candidate search list, and the eu_buerger filter. SELECT * and the query-string token stay out.
+
 ## Repository map
 
-- `candidate-search/`: installable plugin, skill, privacy references, synthetic evaluations, and MCP connection metadata.
+- `candidate-search/`: installable plugin, skill, privacy references, synthetic evaluations, and the live MCP connection. That connection still points at the old Worker.
 - `docs/`: project context, assessments, and agent-facing tracker configuration.
 - `scripts/`: local package validation without CRM access.
-- `server/`: local MCP server workspace and its own dependency manifest.
+- `server/`: local workshop for the earlier read behavior. It is not the mcp-use server.
+- `cloud-crm-mcp/`: mcp-use 2.7.3 read server. Phase-1 tools are registered. It also serves the skill `crm-kandidatensuche` and search guide 1.2.0. It is not connected to MySQL, not running, and not deployed. It refuses the old Worker and the old Hyperdrive. Its `deploy` script points at Manufact and must not be used.
 - `worker-source/`: local Cloudflare Worker source snapshot.
 
 ## Boundaries
 
-CRM candidate, company, order, and SQL access must use the configured Cloudflare Worker path. Skill files and fixtures must not contain credentials, database code, candidate exports, or real personal data. Authorization, tenant scope, SQL limits, and output redaction must be enforced by server handlers; plugin instructions are not a security boundary.
+The live plugin still reaches CRM data through the configured Cloudflare Worker path. The new server in `cloud-crm-mcp/` is separate and is not that live path yet. Skill files and fixtures must not contain credentials, database code, candidate exports, or real personal data. Authorization, tenant scope, SQL limits, and output redaction must be enforced by server handlers; plugin instructions are not a security boundary.
 
 The beta reads its bearer credential from the host environment. The target
 variable name is `CRM_REMOTE_MCP_TOKEN`; existing files still contain the older

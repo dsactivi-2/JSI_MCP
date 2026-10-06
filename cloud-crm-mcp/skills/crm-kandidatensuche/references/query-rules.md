@@ -2,7 +2,7 @@
 
 ## Result scope and tool selection
 
-Return the requested count, names, list, profile, or summary. Do not retrieve extra profiles, statistics, contact fields, or linked records to construct a smaller answer. `crm_stats` returns candidate, company, and assignment totals; `crm_beruf_report` also returns position and language breakdowns; `crm_kandidat_profile` returns a complete profile. Use these only when that scope is requested and their output complies with privacy policy. Otherwise use an explicit-column or aggregate `SELECT` fallback after the guide and necessary schema checks. A filtered list of at most 200 rows is not a complete count.
+Return the requested count, names, list, profile, or summary. Do not retrieve extra profiles, statistics, contact fields, or linked records to construct a smaller answer. `crm_stats` returns candidate, company, and assignment totals; `crm_beruf_report` also returns position and language breakdowns; `crm_kandidat_profile` returns a complete profile. Use these only when that scope is requested and their output complies with privacy policy. Otherwise use an explicit-column or aggregate `SELECT` fallback after the guide and necessary schema checks. One page of 50 rows is not a complete count.
 
 ## Archive and counting
 
@@ -34,9 +34,9 @@ When both school and qualification direction are requested, both predicates must
 
 ## Limits and fallback
 
-The downloaded handler for crm_search_kandidaten exposes count_only, cursor, page_size, and limit. Its current page size defaults to 100 and cannot exceed 1000. On the new server a candidate list loads 50 rows per page and does not return 2000 candidates at once. Repeat the same filters with the returned next page until no rows remain. A count returns the full number and does not stop at 50. Do not invent offset, and do not treat one page as the full set.
+Candidate search exposes count_only, cursor, and page_size. A candidate list loads 50 rows per page and does not return 2000 candidates at once. Repeat the same filters with the returned cursor until no rows remain. A count returns the full number and does not stop at 50. Do not invent offset, and do not treat one page as the full set.
 
-Company search and assignment search still cap at 200 rows and default to 25 in the downloaded handler. A capped list is not a complete count. On the new server, crm_query does not append LIMIT 200. A list from it loads 50 rows per page. A count returns the full number and does not stop at 50. Profession reports cap the position list at 50.
+Company search, assignment search, and crm_query use the same rule. crm_query does not append LIMIT 200. A list loads 50 rows per page. A count returns the full number and does not stop at 50. Profession reports cap the position list at 50.
 
 Candidate search accepts eu_buerger and includes kandidat_datumrodjenja in each search row, plus age when the handler calculates it. true means kandidat_drzavljanstvo_vrsta LIKE 'EU%'. false also includes an empty citizenship field. The user accepted that on 6 October 2026. Do not query the raw citizenship column, and do not return a birth date for an age-only count.
 
