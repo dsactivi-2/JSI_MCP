@@ -1,5 +1,15 @@
 # Documentation change evidence
 
+## 7 October 2026 — Active docs now separate the new server from the old bundle
+
+**Trigger:** The user asked whether the repository had been brought up to date or only pushed, and then asked for the document layout, the current wiring, and a handover for a new chat.
+
+**Before:** `docs/project.md` still drew Codex and ChatGPT through the old Cloudflare Worker. `docs/memory.md` told the next session not to point Codex at the new server. The root README still gave the beta token as the current login. GitHub's language bar looked like the new server was JavaScript.
+
+**After:** The active docs say the running server is the TypeScript project `cloud-crm-mcp/` on Manufact. `worker-source/` is the 3.8 MB old bundle and the reason for the JavaScript percentage. `.agents/skills/` are general coding skills, not telephone agents. `docs/memory.md` is the handover. The historical audits were not rewritten. Linear was not updated. The live HTTP checks from 6 October 2026 were not repeated.
+
+**Checked:** File sizes of the tracked tree, `candidate-search/.mcp.json`, and the local Codex config entry `crm-remote` with `enabled = false`. Not checked: a new Manufact login, a candidate row, or the current Linear statuses.
+
 ## 7 October 2026 — The project is published on GitHub
 
 **Trigger:** The user supplied the empty repository https://github.com/dsactivi-2/JSI_MCP and asked for the whole project to be pushed, with a README.

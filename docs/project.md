@@ -1,6 +1,6 @@
 # Cloud CRM MCP project context
 
-Status date: 6 October 2026
+Status date: 7 October 2026
 
 ## Project identity
 
@@ -11,10 +11,7 @@ package or public product is a separate decision and has not been implemented.
 
 ## Product
 
-The currently implemented product is a read-only recruiting workflow for Codex
-and ChatGPT. It packages the `crm-kandidatensuche` skill and connects it to the
-Cloudflare CRM MCP Worker. It can search candidates, companies, and orders and
-also exposes statistics, schema inspection, and a restricted SQL fallback.
+The implemented server is `cloud-crm-mcp/`. It is TypeScript, built with mcp-use, and hosted on Manufact at https://calm-forge-hk9rc.run.mcp-use.com/mcp. It reads the existing MySQL database. The `candidate-search` package still carries the `crm-kandidatensuche` skill. The old Cloudflare Worker remains online and must not be changed. It is not the server this repository deploys.
 
 The approved planning scope is broader. On 6 October 2026 the user included eight points on the new server and split the build into phases. Phase 1 is the read server: birth date in the search list, the EU-citizen filter, free read-only SQL, and list and describe tables, together with the candidate, company, order, statistics, and profession-report reads. Phase 2 is own screens. Phase 3 is a later scoring step. The engine is not chosen: the user is still checking TypeSafe and a Cloudflare model they called Clef. That product name is not verified here. Phase 4 is writes, export, and import. Phase 5 is ranking, photos, and biometrics. Inclusion does not mean implemented, verified, or cleared for production data. `server/SPEC.md` is the product specification and `docs/open-work.md` is the current roadmap.
 
@@ -31,39 +28,30 @@ The installable package is `candidate-search/`, currently version `0.1.0-beta.2`
 ## Current architecture
 
 ```text
-Codex or ChatGPT
+ChatGPT, Grok, Codex, or another MCP client
         |
-        | MCP over HTTPS
+        | HTTPS, WorkOS login
         v
-candidate-search plugin and crm-kandidatensuche skill
-        |
-        v
-Cloudflare Worker: crm-pipedrive-worker
-        |
-        +-- /health
-        +-- /mcp
-        +-- /sse
+https://calm-forge-hk9rc.run.mcp-use.com/mcp
         |
         v
-CrmMCP Durable Object
+cloud-crm-mcp on Manufact, TypeScript
+        |
+        | TLS, CRM_DATABASE_URL, Aiven project CA
         |
         v
-Cloudflare Hyperdrive
-        |
-        v
-Aiven MySQL
+existing MySQL database
 ```
 
-The read-only assessment on 4 October 2026 found Worker version 33,
-`0.1.0-beta.6`, with the Durable Object class `CrmMCP`, a Hyperdrive binding,
-and a server-managed `WORKER_API_KEY`. A local Worker source snapshot exists
-under `worker-source/crm-pipedrive-worker/`. Deployment provenance still needs
-to be reconciled before that snapshot is treated as the canonical release
-source (`ACT-143`).
+Connecting does not install the skill. The shared instructions are `cloud-crm-mcp/skills/crm-kandidatensuche/SKILL.md`. `agents/openai.yaml` is only an OpenAI hint. A client that never calls `skills/list` does not receive that text. On 7 October 2026 Grok read two old local files instead.
 
-A live read on 5 October 2026 found one newer deployment, version `0898fdb7-7d67-4fb6-a17e-2ef27f8743f6` at 04:13 UTC. Its message records an updated `WORKER_API_KEY` secret. The deployed `index.js` is byte-for-byte the local snapshot, SHA-256 `3afa3e173ad0cf604795407e8e923889ccf79da89235f74c4ae82c229e53378d`. No new server script was deployed. Both local token variables are rejected with HTTP 401.
+GitHub publishes this repository at https://github.com/dsactivi-2/JSI_MCP. The repository is public. Its language bar is about 98 percent JavaScript because `worker-source/crm-pipedrive-worker/src/index.js` is a 3.8 MB copy of the old Worker. The new server is the TypeScript under `cloud-crm-mcp/`. `.agents/skills/` holds general coding skills, not CRM or telephone agents. There are no telephone agents in this repository.
 
-A source read of that same local file on 5 October 2026 confirms the hash and the handler behavior. The server calls itself crm-mysql 1.1.0. /health returns ok, service crm-mcp, and the current time; a direct call the same day did that, and /healthz returned 404. Candidate search has count_only and cursor pagination with a page cap of 1000. Company search, assignment search, and free SQL stay at a 200-row cap. The candidate handler still accepts eu_buerger and returns the birth date. On 6 October 2026 the user decided the new server keeps both: the birth date in the candidate search list, and the eu_buerger filter. SELECT * and the query-string token stay out.
+## Old Worker, kept as evidence
+
+The read-only assessment on 4 October 2026 found Worker version 33, `0.1.0-beta.6`, with the Durable Object class `CrmMCP`, a Hyperdrive binding, and a server-managed `WORKER_API_KEY`. The local snapshot is `worker-source/crm-pipedrive-worker/`. Do not treat it as the source of the Manufact server. `ACT-143` remains the provenance gap.
+
+A live read on 5 October 2026 found deployment `0898fdb7-7d67-4fb6-a17e-2ef27f8743f6` at 04:13 UTC. The deployed `index.js` matches the local snapshot, SHA-256 `3afa3e173ad0cf604795407e8e923889ccf79da89235f74c4ae82c229e53378d`. Both local token variables returned HTTP 401. That bundle calls itself crm-mysql 1.1.0, caps company, assignment, and free-SQL reads at 200 rows, and accepts a token in the query string. The new server does not copy those limits or that token-in-URL behavior. It does keep the birth date in candidate search rows and the `eu_buerger` filter, by the user's decision on 6 October 2026.
 
 ## Repository map
 
@@ -72,18 +60,15 @@ A source read of that same local file on 5 October 2026 confirms the hash and th
 - `scripts/`: local package validation without CRM access.
 - `server/`: local workshop for the earlier read behavior. It is not the mcp-use server.
 - `cloud-crm-mcp/`: the mcp-use read server deployed on Manufact. Phase-1 tools are registered. It also serves the skill `crm-kandidatensuche` and search guide 1.2.0. It connects with TLS to the existing MySQL database when CRM_DATABASE_URL is set, using the Aiven project CA. It refuses the old Worker name and the old Hyperdrive id.
-- `worker-source/`: local Cloudflare Worker source snapshot.
+- `worker-source/`: downloaded old Worker bundle. Evidence only. Not the TypeScript server.
+- `.agents/skills/`: copied general coding skills. Not loaded by the CRM server.
+- GitHub: https://github.com/dsactivi-2/JSI_MCP, public since 7 October 2026.
 
 ## Boundaries
 
-The installable plugin now names the new Manufact server. Codex crm-remote points there too. The new server can count the existing database. Skill files and fixtures must not contain credentials, database code, candidate exports, or real personal data. Authorization, tenant scope, SQL limits, and output redaction must be enforced by server handlers; plugin instructions are not a security boundary.
+The installable package names the Manufact server in `candidate-search/.mcp.json`. It stores no token. On this Mac, Codex `crm-remote` has the same URL and `enabled = false`. The new server has one proven count and no proven candidate, company, or order row read. Skill files and fixtures must not contain credentials, database code, candidate exports, or real personal data. Handlers enforce authorization. Prompt text does not.
 
-The beta reads its bearer credential from the host environment. The target
-variable name is `CRM_REMOTE_MCP_TOKEN`; existing files still contain the older
-`CRM_CANDIDATE_MCP_TOKEN` name and require a coordinated migration. The
-credential must never be placed in a URL, manifest, skill, log, archive, or Git
-commit. OAuth 2.1 is the account-linking mechanism for the new server
-(`ACT-142`). Deployment 2a078755 publishes WorkOS Staging discovery and keeps CRM_MCP_SERVER_TOKEN as a fallback. At 21:53 UTC, /health returned 200, discovery returned 200, and /mcp without a token returned 401. WorkOS mode does not require the OAuth scope crm:read at the gate. Discovery advertises openid, profile, email, and offline_access. Only crm_query declares sql:read. No tool handler checks the WorkOS role, and no tenant isolation exists. The live token contents were not read in the 20:52 UTC check.
+WorkOS is the login for the new server. Deployment 2a078755 publishes discovery for https://balanced-lantern-65-staging.authkit.app. The advertised scopes are openid, profile, email, and offline_access. `crm_query` declares `sql:read`, and no tool handler checks the WorkOS role. `CRM_MCP_SERVER_TOKEN` remains a code fallback. `server/scripts/start-inspector.sh` still expects the older `CRM_CANDIDATE_MCP_TOKEN` name. That script starts the local Inspector for the old workshop, not the Manufact server.
 
 ## Current verification
 
@@ -99,10 +84,10 @@ Use MCP Inspector against an authorized isolated deployment for initialization, 
 
 ## Open foundation gaps
 
-- Next: the count is proven. Real candidate, company, and order reads are not proven. Do not create a second database, and do not change the old Worker or its Hyperdrive id.
-- Verify a real read after that connection exists. No CRM result has been proven on the new server.
-- Enforce the WorkOS roles in the tool handlers. crm:read and sql:read are not enforced there today.
-- Codex crm-remote now uses the new server. Candidate, company, and order rows are still not proven.
-- Reach the Inspector on the online server. The public /mcp/inspector path returned 404 on 6 October 2026 at 20:52 UTC.
-- Confirm the canonical relationship between the old deployed Worker and `worker-source/` (`ACT-143`).
-- Keep phases 2 through 5 behind their existing gates. They are included and not built.
+- The count is proven. Candidate, company, and order row reads are not. Do not create a second database. Do not change the old Worker or its Hyperdrive id.
+- Enforce WorkOS roles in the tool handlers. They are not enforced today.
+- `crm-remote` points at the new server and is switched off in the local Codex config.
+- The public `/mcp/inspector` path returned 404 on 6 October 2026 at 20:52 UTC. The Manufact dashboard Inspector is separate.
+- The skill is on the server. Clients do not receive it automatically.
+- `ACT-143` remains open. It does not make `worker-source/` the new server.
+- Phases 2 through 5 are included and not built.
