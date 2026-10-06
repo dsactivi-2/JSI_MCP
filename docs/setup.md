@@ -1,6 +1,6 @@
 # Cloud CRM MCP setup and verification
 
-Status date: 5 October 2026
+Status date: 6 October 2026
 
 ## Prerequisites
 
@@ -35,9 +35,7 @@ The current wrapper reads `CRM_CANDIDATE_MCP_TOKEN`. The target project-wide
 name is `CRM_REMOTE_MCP_TOKEN`; changing the wrapper and manifests together is
 open work. Do not store either value in a URL or committed file.
 
-The most recent endpoint attempt returned HTTP 401. Therefore initialization,
-tool schemas, annotations and behavioral evaluations are **not verified**. A
-new authorized credential or OAuth test flow is required before retrying.
+The old Worker endpoint last returned HTTP 401 on 5 October 2026, including for both configured tokens. The new server is separate. On 6 October 2026 at 20:52 UTC its /health returned 200, its OAuth discovery returned 200, a call without a token returned 401, and https://calm-forge-hk9rc.run.mcp-use.com/mcp/inspector returned 404. Tool behavior against CRM data is not verified because CRM_DATABASE_URL is not set.
 
 ## Documentation checks
 
@@ -51,8 +49,8 @@ dependency. A fresh content review is required after relevant file changes.
 
 ## Cloudflare boundary
 
-The current task authorizes analysis and documentation only. Do not modify or
-deploy the live Worker. When future authorized Cloudflare work begins, use the
+Do not modify or redeploy the old live Worker. The new server is the Manufact
+deployment, not that Worker. When future authorized Cloudflare work begins, use the
 `cf` CLI unless the relevant source project contains a Wrangler configuration;
 the downloaded snapshot does contain `wrangler.jsonc`, so Wrangler is suitable
 inside that project after provenance and deployment authorization are resolved.

@@ -18,7 +18,13 @@ also exposes statistics, schema inspection, and a restricted SQL fallback.
 
 The approved planning scope is broader. On 6 October 2026 the user included eight points on the new server and split the build into phases. Phase 1 is the read server: birth date in the search list, the EU-citizen filter, free read-only SQL, and list and describe tables, together with the candidate, company, order, statistics, and profession-report reads. Phase 2 is own screens. Phase 3 is a later scoring step. The engine is not chosen: the user is still checking TypeSafe and a Cloudflare model they called Clef. That product name is not verified here. Phase 4 is writes, export, and import. Phase 5 is ranking, photos, and biometrics. Inclusion does not mean implemented, verified, or cleared for production data. `server/SPEC.md` is the product specification and `docs/open-work.md` is the current roadmap.
 
-On 6 October 2026 the user required the new server to be hosted online against the live MySQL database. Decision DEC-2026-10-06-mcp-use selects mcp-use as the kit and Cloudflare Containers as the host. It replaces the earlier SDK-on-a-Worker choice in DEC-2026-10-06-hosted-stack. Manufact is not used. Nothing has been deployed.
+On 6 October 2026 the user required the new server to be hosted online and to read the existing live MySQL database. Decision DEC-2026-10-06-mcp-use selects mcp-use as the kit. It replaces the earlier SDK-on-a-Worker choice in DEC-2026-10-06-hosted-stack. A same-day note named Cloudflare Containers and said Manufact was not used. Later the same day the user chose Manufact as the temporary host. Cloudflare remains later.
+
+Checked on 6 October 2026 at 20:52 UTC: the new server is online at https://calm-forge-hk9rc.run.mcp-use.com/mcp. Manufact server id 9e075f18-34d7-4a71-a3e9-88868821addb, active deployment c0be2dd3-77e8-46ac-824f-9942bc265c9f, status running since 16:42 UTC. /health returned 200. /.well-known/oauth-protected-resource returned 200 and names https://balanced-lantern-65-staging.authkit.app. A call without a token returned 401. /mcp/inspector returned 404. Production variables are CRM_MCP_SERVER_TOKEN, MCP_USE_OAUTH_WORKOS_SUBDOMAIN, and OAUTH_RESOURCE. CRM_DATABASE_URL is not set. No CRM query was sent.
+
+Decision DEC-2026-10-06-same-database: "getrennte Datenbank" means a new connection to the same existing MySQL database, not a second database. The old Worker, its host, and its Hyperdrive id stay untouched. That connection is not configured yet.
+
+The installable plugin still points at the old Worker. A screenshot in this chat showed Manufact connected as ds@activi.io. That browser session was not repeated in the 20:52 UTC check.
 
 The installable package is `candidate-search/`, currently version `0.1.0-beta.2`. Its portable identity is `plugin.json`; the Codex beta connection uses `.codex-plugin/plugin.json` and `.mcp.json`.
 
@@ -65,19 +71,19 @@ A source read of that same local file on 5 October 2026 confirms the hash and th
 - `docs/`: project context, assessments, and agent-facing tracker configuration.
 - `scripts/`: local package validation without CRM access.
 - `server/`: local workshop for the earlier read behavior. It is not the mcp-use server.
-- `cloud-crm-mcp/`: mcp-use 2.7.3 read server. Phase-1 tools are registered. It also serves the skill `crm-kandidatensuche` and search guide 1.2.0. It is not connected to MySQL, not running, and not deployed. It refuses the old Worker and the old Hyperdrive. Its `deploy` script points at Manufact and must not be used.
+- `cloud-crm-mcp/`: the mcp-use read server deployed on Manufact. Phase-1 tools are registered. It also serves the skill `crm-kandidatensuche` and search guide 1.2.0. It is not connected to MySQL. It refuses the old Worker host and the old Hyperdrive id.
 - `worker-source/`: local Cloudflare Worker source snapshot.
 
 ## Boundaries
 
-The live plugin still reaches CRM data through the configured Cloudflare Worker path. The new server in `cloud-crm-mcp/` is separate and is not that live path yet. Skill files and fixtures must not contain credentials, database code, candidate exports, or real personal data. Authorization, tenant scope, SQL limits, and output redaction must be enforced by server handlers; plugin instructions are not a security boundary.
+The installable plugin still reaches CRM data through the old Cloudflare Worker. The new server in `cloud-crm-mcp/` is online on Manufact, but it is not the plugin path and it has no database connection. Skill files and fixtures must not contain credentials, database code, candidate exports, or real personal data. Authorization, tenant scope, SQL limits, and output redaction must be enforced by server handlers; plugin instructions are not a security boundary.
 
 The beta reads its bearer credential from the host environment. The target
 variable name is `CRM_REMOTE_MCP_TOKEN`; existing files still contain the older
 `CRM_CANDIDATE_MCP_TOKEN` name and require a coordinated migration. The
 credential must never be placed in a URL, manifest, skill, log, archive, or Git
-commit. OAuth 2.1 remains the intended final account-linking mechanism
-(`ACT-142`). The new server code in cloud-crm-mcp now publishes OAuth discovery when its issuer settings are present, and it keeps CRM_MCP_SERVER_TOKEN as a fallback. That code is deployment #3. Discovery stays off until the issuer settings are present.
+commit. OAuth 2.1 is the account-linking mechanism for the new server
+(`ACT-142`). Deployment c0be2dd3 publishes WorkOS Staging discovery and keeps CRM_MCP_SERVER_TOKEN as a fallback. WorkOS mode does not require the OAuth scope crm:read at the gate. Discovery advertises openid, profile, email, and offline_access. Only crm_query declares sql:read. No tool handler checks the WorkOS role, and no tenant isolation exists. The live token contents were not read in the 20:52 UTC check.
 
 ## Current verification
 
@@ -93,10 +99,10 @@ Use MCP Inspector against an authorized isolated deployment for initialization, 
 
 ## Open foundation gaps
 
-- Next session: build the new read-only server beside the live Worker, as decided in docs/memory.md. Do not spend that session on the current Worker.
-- Confirm the canonical relationship between the deployed Worker and `worker-source/`.
-- Implement and verify server-side field projection, exact counts, redaction, tenant authorization, and SQL enforcement.
-- Replace the temporary bearer-token beta with reviewed OAuth 2.1 account linking.
-- Keep the deployment-status documentation synchronized after a tested Worker release.
-- Restore an authorized Inspector connection; the currently available beta token returns HTTP 401.
-- Implement the module and decision backlog tracked under `ACT-140` in this repository's Linear tracker, not in Candidate Search.
+- Next: add one new connection from the Manufact server to the same existing MySQL database. Do not create a second database, and do not change the old Worker or its Hyperdrive id.
+- Verify a real read after that connection exists. No CRM result has been proven on the new server.
+- Enforce the WorkOS roles in the tool handlers. crm:read and sql:read are not enforced there today.
+- Point Codex at the new server only after a real read works. It still uses the old Worker and CRM_CANDIDATE_MCP_TOKEN.
+- Reach the Inspector on the online server. The public /mcp/inspector path returned 404 on 6 October 2026 at 20:52 UTC.
+- Confirm the canonical relationship between the old deployed Worker and `worker-source/` (`ACT-143`).
+- Keep phases 2 through 5 behind their existing gates. They are included and not built.

@@ -2,7 +2,7 @@
 
 ## Status
 
-Expanded planning scope approved on 5 October 2026. A local phase-1 workshop exists under server/src and is covered by local tests. It is not connected to MySQL and has no public address. Decision DEC-2026-10-06-mcp-use requires the delivered server to be built with mcp-use and hosted on Cloudflare Containers against the existing MySQL database. Manufact is not used. Nothing has been deployed. The Linear tracker is https://linear.app/activi/project/lena-1333951b31fb. Its title Lena was rejected on 5 October 2026 and is not the product name. The scope root is
+Expanded planning scope approved on 5 October 2026. A local phase-1 workshop exists under server/src and is covered by local tests. It is not the hosted server. The hosted server is cloud-crm-mcp on Manufact at https://calm-forge-hk9rc.run.mcp-use.com/mcp, deployment c0be2dd3, checked running on 6 October 2026 at 20:52 UTC. It is not connected to MySQL. Decision DEC-2026-10-06-mcp-use selects mcp-use. Manufact is the temporary host. Decision DEC-2026-10-06-same-database means a new connection to the same existing MySQL database, not a second database. The Linear tracker is https://linear.app/activi/project/lena-1333951b31fb. Its title Lena was rejected on 5 October 2026 and is not the product name. The scope root is
 [ACT-140](https://linear.app/activi/issue/ACT-140/deliver-the-complete-cloud-crm-mcp-application-scope).
 
 ## Value Proposition
@@ -257,8 +257,10 @@ filter. Normal name, age, profession, language, level, and archive filtering use
 ## Later phases
 
 Decision `DEC-2026-10-06-phased-scope`, 6 October 2026. All eight points are
-included on the new server. Inclusion is not implementation. No server code
-for these points exists in this repository, and the live Worker is unchanged.
+included on the new server. Inclusion is not implementation. Phase-1 read
+tools exist in cloud-crm-mcp and are deployed, but they have no database
+connection and no proven CRM read. Phases 2 through 5 have no implementation.
+The old Worker is unchanged.
 
 Phase 1, the first build:
 

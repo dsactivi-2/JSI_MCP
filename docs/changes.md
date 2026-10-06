@@ -1,5 +1,36 @@
 # Documentation change evidence
 
+## 6 October 2026 — Active docs now match the running Manufact server
+
+**Trigger:** The user asked what "mostly" left open, and then asked for the docs, checklists, and dependent wording to be updated before the next task.
+
+**Before:** project.md, open-work.md, memory.md, and server/SPEC.md still said both that Manufact was online and that nothing had been deployed or that Manufact must not be used. They named deployment #4. The README said every tool requires crm:read.
+
+**After:** The active docs name deployment c0be2dd3 as the running server, checked at 20:52 UTC. Discovery returned 200, /health returned 200, an unauthenticated /mcp call returned 401, and /mcp/inspector returned 404. CRM_DATABASE_URL is absent. "Getrennte Datenbank" is recorded as a new connection to the same MySQL database, not a second database. WorkOS roles are recorded as not enforced in tool handlers. Historical change entries stay as they were.
+
+**Checked:** mcp-use whoami, servers list, deployments list, env list metadata without values, and the HTTP calls above. Not checked: a repeated Manufact browser login, the contents of a live token, a CRM query, WorkOS public signup, or a Linear update.
+
+
+## 6 October 2026 — Manufact probe no longer crashes on a WorkOS token
+
+**Trigger:** Manufact showed connection failed because server/discover returned HTTP 500.
+
+**Before:** Deployment #4 logged a 253 ms HTTP 500 for server/discover after WorkOS discovery succeeded.
+
+**After:** The token check no longer throws a plain error when crm:read is absent. Deployment #5 c0be2dd3-77e8-46ac-824f-9942bc265c9f is running. An unauthenticated call still returns 401. A completed Manufact login was not repeated here.
+
+**Checked:** Deployment status running and the earlier runtime log. Not checked: the user Retry click.
+
+## 6 October 2026 — WorkOS Staging discovery is live
+
+**Trigger:** The user enabled Dynamic Client Registration and Client ID Metadata Document in WorkOS Staging.
+
+**Before:** Deployment #3 was running. Both discovery addresses returned 404.
+
+**After:** Deployment #4 2d42c626-896c-44d6-b5ff-95cedc36abeb is running. `/.well-known/oauth-protected-resource` returned 200 and names `https://balanced-lantern-65-staging.authkit.app`. A call without a token returned 401 with `WWW-Authenticate`. The WorkOS user ds@activi.io has accepted the Staging invitation and has the role CRM mit SQL. No Manufact browser login was completed in this check. No database query ran. The shared token was not sent.
+
+**Checked:** Manufact deployment status running, the HTTP calls above, and the WorkOS user record. Not checked: a completed Manufact connect flow or CRM data.
+
 ## 6 October 2026 — OAuth-capable code deployed, discovery still off
 
 **Trigger:** The user asked to deploy the prepared OAuth code and commit it.

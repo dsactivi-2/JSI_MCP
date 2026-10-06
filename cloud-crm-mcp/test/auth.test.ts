@@ -71,3 +71,15 @@ test("OAuth nennt den Anmeldewunsch und laesst den alten Token weiter", async ()
 test("halbes OAuth startet nicht", () => {
   assert.throws(() => createCloudCrmServer({ OAUTH_ISSUER: "https://login.example.com/" }), /OAUTH_AUTHORIZATION_ENDPOINT fehlt/);
 });
+
+test("WorkOS-Adresse schaltet die Anmeldung ohne einzelne Endpunkte ein", async () => {
+  const server = createCloudCrmServer({
+    CRM_MCP_SERVER_TOKEN: "test-token",
+    MCP_USE_OAUTH_WORKOS_SUBDOMAIN: "balanced-lantern-65-staging.authkit.app",
+    OAUTH_RESOURCE: "https://crm.example.com/mcp",
+  });
+  const root = await server.fetch(mcp("/.well-known/oauth-protected-resource"));
+  assert.equal(root.status, 200);
+  const metadata = await root.json() as { authorization_servers: string[] };
+  assert.deepEqual(metadata.authorization_servers, ["https://balanced-lantern-65-staging.authkit.app"]);
+});

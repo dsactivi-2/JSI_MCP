@@ -16,7 +16,8 @@ The folder name is MCP Plugin 2. The installable package remains candidate-searc
 - `candidate-search/tests/evals.json` — activation and safety evaluation cases.
 - `candidate-search/mcp/crm_search_guide.{md,json}` — prepared Worker guide update; these files are not loaded or deployed by `.mcp.json`.
 - `scripts/validate_package.py` — repeatable local consistency checks, with no CRM calls.
-- `server/` — TypeScript MCP SDK v2 workspace, MCP Inspector setup, and product specification.
+- `server/` — local workshop, MCP Inspector setup, and product specification. It is not the hosted server.
+- `cloud-crm-mcp/` — hosted mcp-use read server on Manufact. Online, not connected to MySQL.
 - `worker-source/` — downloaded Worker source snapshot; not yet proven to be the canonical deployment source.
 - `docs/` — current context, audits, roadmap, documentation index, and change evidence.
 
@@ -24,7 +25,7 @@ The folder name is MCP Plugin 2. The installable package remains candidate-searc
 
 The package follows the updated project data policy and the prepared Desktop MCP guide: distinct counts, literal profession searches unless mapping is authorized, listening-based language minima, same-record education filters, valid age calculations, and minimal field retrieval. On 6 October 2026 the new server was decided to keep the birth date in candidate search rows and the eu_buerger filter. Gender, religion, health data, ethnic origin, and the raw citizenship column stay prohibited. Both manifest versions are synchronized.
 
-The connected MCP guide was read on 2026-10-02. It still documents citizenship, and candidate search still exposes `eu_buerger`; full profile output has not been verified. A downloaded production Worker bundle now exists under `worker-source/`, but it is not a canonical reproducible source tree. The new guide assets and tool contracts now keep the birth date and the eu_buerger filter. No server deployment has occurred. Field projection, exact count modes, output redaction, authorization, and SQL enforcement require implementation and verification on the server. The plugin cannot establish those guarantees through instructions.
+The connected MCP guide was read on 2026-10-02. It still documents citizenship, and candidate search still exposes `eu_buerger`; full profile output has not been verified. A downloaded production Worker bundle now exists under `worker-source/`, but it is not a canonical reproducible source tree. The new guide assets and tool contracts now keep the birth date and the eu_buerger filter. The new Manufact server is deployed. It still has no database connection, so no CRM read is proven there. The old Worker script was not replaced. Field projection, exact count modes, output redaction, authorization, and SQL enforcement require implementation and verification on the server. The plugin cannot establish those guarantees through instructions.
 
 ## Beta authentication
 

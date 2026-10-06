@@ -9,20 +9,22 @@ export const ADVERTISED_SCOPES = [BASELINE_SCOPE, "candidates:read", "reports:re
 export type CloudCrmUser = { id: string };
 
 export function createOAuthProvider(env: NodeJS.ProcessEnv): OAuthProvider<CloudCrmUser> | undefined {
-  const issuer = clean(env.OAUTH_ISSUER);
+  const workos = workosSettings(env);
+  const issuer = workos?.issuer ?? clean(env.OAUTH_ISSUER);
   if (!issuer) return undefined;
 
-  const authorizationEndpoint = required(env, "OAUTH_AUTHORIZATION_ENDPOINT");
-  const tokenEndpoint = required(env, "OAUTH_TOKEN_ENDPOINT");
-  const jwksUrl = required(env, "OAUTH_JWKS_URL");
+  const authorizationEndpoint = workos?.authorizationEndpoint ?? required(env, "OAUTH_AUTHORIZATION_ENDPOINT");
+  const tokenEndpoint = workos?.tokenEndpoint ?? required(env, "OAUTH_TOKEN_ENDPOINT");
+  const jwksUrl = workos?.jwksUrl ?? required(env, "OAUTH_JWKS_URL");
   const resource = resourceUrl(env);
   const audience = clean(env.OAUTH_AUDIENCE);
-  const registrationEndpoint = clean(env.OAUTH_REGISTRATION_ENDPOINT);
+  const registrationEndpoint = workos?.registrationEndpoint ?? clean(env.OAUTH_REGISTRATION_ENDPOINT);
   assertHttps("OAUTH_ISSUER", issuer);
   assertHttps("OAUTH_AUTHORIZATION_ENDPOINT", authorizationEndpoint);
   assertHttps("OAUTH_TOKEN_ENDPOINT", tokenEndpoint);
   assertHttps("OAUTH_JWKS_URL", jwksUrl);
 
+  const scopesSupported = workos ? ["openid", "profile", "email", "offline_access"] : [...ADVERTISED_SCOPES];
   const metadata: OAuthMetadata = {
     issuer,
     authorization_endpoint: authorizationEndpoint,
@@ -30,15 +32,15 @@ export function createOAuthProvider(env: NodeJS.ProcessEnv): OAuthProvider<Cloud
     response_types_supported: ["code"],
     grant_types_supported: ["authorization_code", "refresh_token"],
     code_challenge_methods_supported: ["S256"],
-    scopes_supported: [...ADVERTISED_SCOPES],
+    scopes_supported: scopesSupported,
     ...(registrationEndpoint ? { registration_endpoint: registrationEndpoint } : {}),
   };
 
   return oauthCustomProvider<CloudCrmUser>({
     resource,
     resourceName: "Cloud CRM MCP",
-    requiredScopes: [BASELINE_SCOPE],
-    scopesSupported: ADVERTISED_SCOPES,
+    requiredScopes: workos ? [] : [BASELINE_SCOPE],
+    scopesSupported,
     oauthMetadata: metadata,
     createTokenVerifier: (boundResource) => {
       const jwt = createJwtVerifier({
@@ -59,7 +61,8 @@ export function createOAuthProvider(env: NodeJS.ProcessEnv): OAuthProvider<Cloud
             };
           }
           const verified = await jwt.verifyAccessToken(token);
-          return { ...verified, scopes: collectScopes(verified) };
+          const scopes = collectScopes(verified);
+          return { ...verified, scopes };
         },
       };
     },
@@ -83,6 +86,29 @@ function resourceUrl(env: NodeJS.ProcessEnv): URL {
   url.search = "";
   url.hash = "";
   return url;
+}
+
+function workosSettings(env: NodeJS.ProcessEnv): {
+  issuer: string;
+  authorizationEndpoint: string;
+  tokenEndpoint: string;
+  jwksUrl: string;
+  registrationEndpoint: string;
+} | undefined {
+  const raw = clean(env.MCP_USE_OAUTH_WORKOS_SUBDOMAIN);
+  if (!raw) return undefined;
+  const url = new URL(raw.includes("://") ? raw : `https://${raw}`);
+  if (url.protocol !== "https:") throw new Error("MCP_USE_OAUTH_WORKOS_SUBDOMAIN muss HTTPS sein.");
+  if (!url.hostname.endsWith(".authkit.app")) throw new Error("MCP_USE_OAUTH_WORKOS_SUBDOMAIN muss eine authkit.app-Adresse sein.");
+  if (url.pathname !== "/" && url.pathname !== "") throw new Error("MCP_USE_OAUTH_WORKOS_SUBDOMAIN darf keinen Pfad haben.");
+  const issuer = url.origin;
+  return {
+    issuer,
+    authorizationEndpoint: issuer + "/oauth2/authorize",
+    tokenEndpoint: issuer + "/oauth2/token",
+    jwksUrl: issuer + "/oauth2/jwks",
+    registrationEndpoint: issuer + "/oauth2/register",
+  };
 }
 
 function collectScopes(info: AuthInfo): string[] {

@@ -27,11 +27,11 @@ To learn more about mcp-use and MCP:
 
 Without OAuth settings, the server still expects `Authorization: Bearer` and `CRM_MCP_SERVER_TOKEN`. A token in the URL is rejected.
 
-When `OAUTH_ISSUER` is set, the server also requires `OAUTH_AUTHORIZATION_ENDPOINT`, `OAUTH_TOKEN_ENDPOINT`, `OAUTH_JWKS_URL`, and `OAUTH_RESOURCE` or `MCP_URL`. It then publishes the OAuth discovery documents and checks signed tokens. `crm:read` is required for every tool. `crm_query` also requires `sql:read`. The shared token stays valid as a fallback. `OAUTH_CLIENT_SECRET` is not a server setting.
+When `OAUTH_ISSUER` is set, the server also requires `OAUTH_AUTHORIZATION_ENDPOINT`, `OAUTH_TOKEN_ENDPOINT`, `OAUTH_JWKS_URL`, and `OAUTH_RESOURCE` or `MCP_URL`. `MCP_USE_OAUTH_WORKOS_SUBDOMAIN` can replace those four endpoint values with the WorkOS AuthKit address. The server then publishes the OAuth discovery documents and checks signed tokens. In WorkOS mode the discovery document advertises openid, profile, email, and offline_access. It does not require crm:read at the gate. Only crm_query declares the OAuth scope sql:read, and no tool handler checks the WorkOS role. The shared token stays valid as a fallback and is treated as if it had every advertised CRM scope. `OAUTH_CLIENT_SECRET` is not a server setting.
 
 ## Deploy on Manufact Cloud
 
-Manufact is only the temporary host. Deployment #3 contains this code. OAuth discovery stays off until the issuer values above are set. Cloudflare remains a later option.
+Manufact is the temporary host. Deployment c0be2dd3 is the running deployment checked on 6 October 2026. The WorkOS Staging AuthKit address turns discovery on. Cloudflare remains a later option. CRM_DATABASE_URL is not a production variable yet.
 
 ```bash
 npm run deploy

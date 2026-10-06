@@ -29,8 +29,8 @@
         "server/SPEC.md",
         "docs/cloudflare-worker-source-audit.md"
       ],
-      "evidence": "Current deployed path, target MCP Apps design and assumptions are separated.",
-      "checked_at": "2026-10-05"
+      "evidence": "The old Worker path and the Manufact server are separated. The new server refuses the old host and old Hyperdrive id and has no database connection.",
+      "checked_at": "2026-10-06"
     },
     {
       "topic": "setup",
@@ -48,7 +48,7 @@
         "docs/project.md",
         "docs/open-work.md"
       ],
-      "evidence": "Phase 1 has local read-server code and tests. MySQL, deployment, and phases 2 through 5 are still open.",
+      "evidence": "Manufact deployment c0be2dd3 is running. Phase-1 tools are registered. MySQL is not connected, no CRM read is proven, and phases 2 through 5 are not built.",
       "checked_at": "2026-10-06"
     },
     {
@@ -78,7 +78,7 @@
       "sources": [
         "docs/memory.md"
       ],
-      "evidence": "Confirmed facts, blockers, boundaries and next actions are recorded.",
+      "evidence": "The next step is a new connection to the same MySQL database. Manufact hosting and WorkOS discovery are recorded as checked, not as a finished CRM read.",
       "checked_at": "2026-10-06"
     },
     {
@@ -138,7 +138,7 @@
         "docs/cloudflare-worker-source-audit.md",
         "server/SPEC.md"
       ],
-      "evidence": "Birth date and eu_buerger are in phase 1. Raw citizenship, gender, religion, health, ethnic origin, SELECT *, and URL tokens stay excluded. Phase 5 photos and biometrics are included but not authorized on real data.",
+      "evidence": "Birth date and eu_buerger are in phase 1. WorkOS roles are not enforced in tool handlers. Raw citizenship, gender, religion, health, ethnic origin, SELECT *, and URL tokens stay excluded.",
       "checked_at": "2026-10-06"
     },
     {
@@ -149,8 +149,8 @@
         "docs/setup.md",
         "docs/cloudflare-current-state-assessment.md"
       ],
-      "evidence": "Hosting, deployment boundary, observability gaps and no-deploy status are documented.",
-      "checked_at": "2026-10-05"
+      "evidence": "Checked 6 October 2026 at 20:52 UTC: /health 200, OAuth discovery 200, unauthenticated /mcp 401, public Inspector 404. No CRM_DATABASE_URL. Old Worker remains the Codex path.",
+      "checked_at": "2026-10-06"
     },
     {
       "topic": "exports",
