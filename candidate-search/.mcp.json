@@ -1,8 +1,0 @@
-{
-  "mcpServers": {
-    "crm-remote": {
-      "type": "http",
-      "url": "https://calm-forge-hk9rc.run.mcp-use.com/mcp"
-    }
-  }
-}

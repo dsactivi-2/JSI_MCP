@@ -1,1 +1,0 @@
-From repository root: python scripts/validate_package.py candidate-search. Run the system plugin validator and skill quick validator when available. Use MCP Inspector against the deployed /mcp endpoint for initialization, schema, annotations, auth, invalid-input, and behavioral checks. There is no compile step.

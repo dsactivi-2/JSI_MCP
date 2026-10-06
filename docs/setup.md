@@ -9,29 +9,20 @@ Status date: 7 October 2026
 - An explicitly authorized isolated CRM test tenant and credential for live
   MCP tests. Never use candidate exports or real PII as fixtures.
 
-## Package checks
+## Server checks
 
-From the repository root:
+From cloud-crm-mcp/:
 
 ```bash
-python3 scripts/validate_package.py candidate-search
-python3 "$HOME/.codex/skills/.system/plugin-creator/scripts/validate_plugin.py" candidate-search
-python3 "$HOME/.codex/skills/.system/skill-creator/scripts/quick_validate.py" candidate-search/skills/crm-kandidatensuche
+npm test
+npm run typecheck
 ```
 
-The optional system validators may be unavailable on a different machine. A
-local validation pass does not prove the remote Worker is safe or compatible.
+These commands do not prove a live candidate read and do not deploy.
 
 ## MCP Inspector
 
-The Inspector dependency is pinned in `server/package-lock.json`. Start it with:
-
-```bash
-cd server
-npm run inspector
-```
-
-The wrapper in `server/scripts/start-inspector.sh` still reads `CRM_CANDIDATE_MCP_TOKEN`. That wrapper belongs to the old local workshop. `candidate-search/.mcp.json` no longer stores a token. It names https://calm-forge-hk9rc.run.mcp-use.com/mcp. Do not store a credential in a URL or committed file.
+The old local Inspector lived in the archived server/ workshop and is not in this repository. The public path /mcp/inspector on the hosted server returned 404 on 6 October 2026. The Manufact dashboard Inspector is separate. Do not store a credential in a URL or committed file.
 
 The old Worker endpoint last returned HTTP 401 on 5 October 2026, including for both configured tokens. The new server is separate. On 6 October 2026 at 21:53 UTC its /health returned 200, its OAuth discovery returned 200, a call without a token returned 401, and https://calm-forge-hk9rc.run.mcp-use.com/mcp/inspector returned 404. One crm_stats count was verified on 6 October 2026 through deployment e97b45da. Candidate rows were not read. The running deployment recorded that day is 2a078755. This documentation pass did not repeat those HTTP calls.
 

@@ -58,9 +58,9 @@ Decision DEC-2026-10-06-phased-scope, 6 October 2026. These four points are Ja. 
 
 Not planned:
 
-- Deploying the downloaded bundle unchanged. The new server starts from worker-source/crm-pipedrive-worker/src/index.js and keeps its candidate search behavior: exact counts, count_only, cursor pages, the eu_buerger filter, and the birth date in search rows. It must still remove SELECT * on assignments, the query-string token, and the lack of OAuth and tenant roles. The file is still a bundle, not an original TypeScript project.
+- Deploying the downloaded Worker bundle. It is in the local archive, not in this repository. The server source is cloud-crm-mcp/.
 - Repairing, redeploying, or replacing the live Worker before the user asks for the switch.
-- Renaming the installable package `candidate-search`.
+- Putting the old candidate-search package back into this repository unless the user asks.
 - Moving this work into the older Candidate Search Linear project.
 - Inventing a replacement for the rejected title Lena.
 
@@ -117,9 +117,9 @@ The first four steps were set on 5 October 2026. Steps 5 through 8 were added on
 
 - The downloaded production bundle is not yet a reproducible canonical source tree.
 - On 5 October 2026 at 07:17 UTC the live Worker returned HTTP 401 for an unauthenticated initialize and for both CRM_REMOTE_MCP_TOKEN and CRM_CANDIDATE_MCP_TOKEN. The tool list could not be read. A deployment at 04:13 UTC the same day updated the WORKER_API_KEY secret without changing the script bytes.
-- Codex `crm-remote` points at the new Manufact server and is switched off locally with `enabled = false`. `candidate-search/.mcp.json` names that server and stores no token. `server/scripts/start-inspector.sh` still reads `CRM_CANDIDATE_MCP_TOKEN`. Which value the live Worker accepts has not been rechecked.
+- Codex `crm-remote` points at the new Manufact server and is switched off locally with `enabled = false`. The old plugin file and the old Inspector script are in the local archive, not in this repository. Which value the live Worker accepts has not been rechecked.
 - The live Worker lacks reviewed OAuth 2.1 identity, tenant and scope enforcement.
-- The old local Inspector script still names `CRM_CANDIDATE_MCP_TOKEN`. The live Manufact login is WorkOS, not that variable.
+- The live Manufact login is WorkOS. The old Inspector script that named CRM_CANDIDATE_MCP_TOKEN is in the local archive.
 - The old Worker still must not be changed. The new Manufact server is deployed and its count works.
 - The tracker still contains exactly ACT-140 through ACT-154, all in Backlog. No sixteenth issue was published. A question the user did not understand is not approval to add another spec.
 - The new server can count CRM data. Candidate rows were not read. Codex crm-remote points at the new server and is switched off. The old Worker was not changed.

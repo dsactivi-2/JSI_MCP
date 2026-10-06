@@ -4,8 +4,8 @@ Status date: 5 October 2026
 
 ## Project evidence
 
-- Local plugin, skill, manifests and synthetic evaluations under `candidate-search/`.
-- Downloaded deployment bundle and configuration under `worker-source/`.
+- The current skill and evaluations are under `cloud-crm-mcp/`. The old plugin is in the local archive.
+- The downloaded Worker bundle is in the local archive, not in this repository.
 - Dated read-only audits in this directory.
 - Linear tracker https://linear.app/activi/project/lena-1333951b31fb and issues ACT-140 through ACT-154. The tracker title Lena was rejected on 5 October 2026.
 

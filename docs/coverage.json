@@ -6,7 +6,7 @@
       "status": "covered",
       "sources": [
         "docs/project.md",
-        "server/SPEC.md"
+        "docs/SPEC.md"
       ],
       "evidence": "Identity, scope, and the five build phases are explicit. The eight included points are not claimed as implemented.",
       "checked_at": "2026-10-06"
@@ -26,8 +26,8 @@
       "status": "covered",
       "sources": [
         "docs/project.md",
-        "server/SPEC.md",
-        "docs/cloudflare-worker-source-audit.md"
+        "docs/SPEC.md",
+        "docs/project.md"
       ],
       "evidence": "The old Worker path and the Manufact server are separated. The new server refuses the old Worker name and old Hyperdrive id. One count on the existing MySQL database is proven.",
       "checked_at": "2026-10-06"
@@ -65,7 +65,7 @@
       "topic": "decisions",
       "status": "covered",
       "sources": [
-        "server/SPEC.md",
+        "docs/SPEC.md",
         "docs/memory.md",
         "docs/open-work.md"
       ],
@@ -114,8 +114,8 @@
       "status": "covered",
       "sources": [
         "docs/setup.md",
-        "candidate-search/tests/evals.json",
-        "server/SPEC.md"
+        "cloud-crm-mcp/test/evals.json",
+        "docs/SPEC.md"
       ],
       "evidence": "Local checks and acceptance criteria are documented; unexecuted live checks are not claimed as passed.",
       "checked_at": "2026-10-05"
@@ -124,8 +124,8 @@
       "topic": "api",
       "status": "covered",
       "sources": [
-        "candidate-search/skills/crm-kandidatensuche/references/tool-contracts.md",
-        "server/SPEC.md"
+        "cloud-crm-mcp/skills/crm-kandidatensuche/references/tool-contracts.md",
+        "docs/SPEC.md"
       ],
       "evidence": "Phase 1 read tools are specified. TypeSafe is phase 3, writes/export/import are phase 4, and ranking/photos/biometrics are phase 5. None of those later tools is exposed.",
       "checked_at": "2026-10-06"
@@ -134,9 +134,9 @@
       "topic": "data-security",
       "status": "covered",
       "sources": [
-        "candidate-search/skills/crm-kandidatensuche/references/privacy.md",
-        "docs/cloudflare-worker-source-audit.md",
-        "server/SPEC.md"
+        "cloud-crm-mcp/skills/crm-kandidatensuche/references/privacy.md",
+        "docs/project.md",
+        "docs/SPEC.md"
       ],
       "evidence": "Birth date and eu_buerger are in phase 1. WorkOS roles are not enforced in tool handlers. Raw citizenship, gender, religion, health, ethnic origin, SELECT *, and URL tokens stay excluded.",
       "checked_at": "2026-10-06"
@@ -147,7 +147,7 @@
       "sources": [
         "docs/project.md",
         "docs/setup.md",
-        "docs/cloudflare-current-state-assessment.md"
+        "docs/project.md"
       ],
       "evidence": "Checked 6 October 2026: deployment e97b45da returned one count, 122004 candidates, 117558 active, 1223 companies, 238 orders. Running deployment 2a078755. Codex crm-remote now points at the new Manufact server and the OAuth login succeeded.",
       "checked_at": "2026-10-06"

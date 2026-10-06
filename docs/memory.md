@@ -8,7 +8,7 @@ This is the handover for the next chat. Read `docs/project.md` first, then this 
 
 - Folder: `/Users/activi/Downloads/MCP Plugin 2`.
 - GitHub: https://github.com/dsactivi-2/JSI_MCP. Public. Branches `main` and `codex/cloud-crm-baseline` carry the same history.
-- Package name: `candidate-search`, version `0.1.0-beta.2`. Do not rename it.
+- The old package name was candidate-search, version 0.1.0-beta.2. That package is in the local archive, not in this repository.
 - Product description: Cloud CRM MCP.
 - Linear: https://linear.app/activi/project/lena-1333951b31fb. The title Lena was rejected on 5 October 2026. No replacement name was given. Do not invent one.
 - Do not move this work into the older Candidate Search Linear project.
@@ -26,15 +26,13 @@ The new server is TypeScript in `cloud-crm-mcp/`, built with mcp-use, hosted on 
 - Proven count, deployment `e97b45da`, 6 October 2026: 122004 candidates, 117558 active, 1223 companies, 238 orders. No candidate row was read.
 - Last HTTP check, 6 October 2026 at 21:53 UTC: `/health` 200, OAuth discovery 200, `/mcp` without a token 401, public `/mcp/inspector` 404.
 
-The old Worker https://crm-pipedrive-worker.6f484zn9bd.workers.dev/mcp stays untouched. Its downloaded bundle is `worker-source/`, about 3.8 MB of JavaScript. That file is why GitHub says the repository is 98 percent JavaScript. It is evidence, not the new server.
+The old Worker https://crm-pipedrive-worker.6f484zn9bd.workers.dev/mcp stays untouched. Its downloaded bundle was about 3.8 MB of JavaScript and now lives only in the local archive. It is evidence, not the new server.
 
 ## What the folders are
 
 - `cloud-crm-mcp/`: the server to change.
-- `candidate-search/`: the installable skill package. Its `.mcp.json` names the Manufact URL and stores no token.
-- `server/`: an older local JavaScript workshop. Not deployed.
-- `worker-source/`: old Worker snapshot. Do not deploy it and do not delete it without being asked.
-- `.agents/skills/`: general coding skills copied into the repo. The CRM server does not serve them. There are no telephone agents here.
+- There are no telephone agents and no general coding-skill pack in this repository.
+- Local archive, not GitHub: /Users/activi/Downloads/JSI_MCP-archiv, commit bc02ddb. It holds the old plugin, the old Worker bundle, the JavaScript workshop, and the old audits. 145 files were copied byte for byte before removal.
 - `docs/`: active facts are `project.md`, `open-work.md`, `memory.md`, `setup.md`, and `changes.md`. The Cloudflare audits and the older plan are history.
 
 ## Decisions that stay
@@ -59,7 +57,7 @@ The old Worker https://crm-pipedrive-worker.6f484zn9bd.workers.dev/mcp stays unt
 ## Next chat
 
 1. Read the active docs above before editing.
-2. Do not deploy, do not delete `worker-source/`, and do not turn cleanup into a rewrite unless the user asks.
+2. Do not deploy. Do not restore the archived old files unless the user asks.
 3. The useful server change, if the user asks, is the short connection text that tells every client to ignore old local skill files and read this server's skill.
 4. A real candidate read is still the missing proof. Do not print personal data into the repository.
 5. Ask for a Linear title before renaming the tracker.

@@ -2,21 +2,20 @@
 
 ## Project Structure & Module Organization
 
-The installable plugin lives in `candidate-search/`. Its portable package identity is `plugin.json`; `.codex-plugin/plugin.json` and `.mcp.json` provide the authenticated Codex beta connection. Keep workflow instructions under `skills/crm-kandidatensuche/`, UI and invocation metadata in `agents/openai.yaml`, and stable privacy or server rules in `references/`. Behavioral evaluation cases belong in `tests/evals.json`. Current product and architecture context lives in `docs/project.md`.
+The server lives in `cloud-crm-mcp/`. Its skill is `cloud-crm-mcp/skills/crm-kandidatensuche/`. Current product and architecture context lives in `docs/project.md`. The approved scope lives in `docs/SPEC.md`.
 
-Do not place database code, credentials, candidate exports, or real personal data in skill files or fixtures. New MCP server source belongs in `server/` with its own unit and integration tests. The downloaded deployed Worker snapshot remains isolated under `worker-source/` until provenance is reconciled.
+Do not place database code, credentials, candidate exports, or real personal data in skill files or fixtures. The old plugin, the old Worker bundle, and the local JavaScript workshop are not in this repository. Their copy is the local archive `/Users/activi/Downloads/JSI_MCP-archiv`. That archive has no GitHub remote.
 
 ## Build, Test, and Development Commands
 
-The installable plugin currently packages configuration and instructions and has no compile step. The separate `server/` workspace currently pins Inspector tooling but does not yet contain the planned server implementation. Run these checks from the repository root:
+From `cloud-crm-mcp/`:
 
-```powershell
-python "$env:USERPROFILE\.codex\skills\.system\plugin-creator\scripts\validate_plugin.py" .\candidate-search
-python "$env:USERPROFILE\.codex\skills\.system\skill-creator\scripts\quick_validate.py" .\candidate-search\skills\crm-kandidatensuche
-npx @modelcontextprotocol/inspector
+```bash
+npm test
+npm run typecheck
 ```
 
-The validators check plugin and skill structure. Use MCP Inspector against the deployed `/mcp` endpoint to verify initialization, schemas, annotations, authorization, and invalid inputs. Manually exercise every case in `candidate-search/tests/evals.json` after metadata or tool changes.
+`npm test` runs the local unit tests. It does not prove a live candidate read. The hosted server is https://calm-forge-hk9rc.run.mcp-use.com/mcp.
 
 ## Coding Style & Naming Conventions
 
@@ -36,7 +35,7 @@ Never commit tokens or embed them in MCP URLs. Use server-managed secrets and OA
 
 ## Serena
 
-This repository is configured as the Serena project `mcp-plugin-2` in `.serena/project.yml` with Python and TypeScript language servers. Activate that project before code-oriented work, read the Serena instructions once per session, and consult the project memories (`core`, `architecture`, `conventions`, `commands`, and `security`) when relevant. Keep the memories synchronized when stable project structure, commands, conventions, or security rules change.
+The Serena project file was moved to the local archive `/Users/activi/Downloads/JSI_MCP-archiv/snapshot/.serena`. It is not part of the server.
 
 ## Agent skills
 

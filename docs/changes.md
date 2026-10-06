@@ -1,5 +1,16 @@
 # Documentation change evidence
 
+## 7 October 2026 — Old files left this repository and stayed on this Mac
+
+**Trigger:** The user asked to take out every file that does not belong to the new server, without deleting it, and to keep those files off the GitHub copy.
+
+**Before:** This repository also contained the old plugin, the 3.8 MB Worker bundle, the JavaScript workshop, general coding skills, Serena data, and the old audits.
+
+**After:** Those 145 files were copied byte for byte to `/Users/activi/Downloads/JSI_MCP-archiv`, local commit `bc02ddb`, with no GitHub remote. They were then removed from this branch. `cloud-crm-mcp/` and the current docs remain. `docs/SPEC.md` is the copy of the approved scope that stays here. GitHub history before this commit still contains the old files. The branch tip does not.
+
+**Checked:** 145 copied files, zero byte differences, before removal. Not checked: a new deployment, a candidate row, or a GitHub language-bar refresh.
+
+
 ## 7 October 2026 — Active docs now separate the new server from the old bundle
 
 **Trigger:** The user asked whether the repository had been brought up to date or only pushed, and then asked for the document layout, the current wiring, and a handover for a new chat.

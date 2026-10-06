@@ -17,7 +17,7 @@
     "docs/sources.md",
     "docs/changes.md",
     "docs/coverage.json",
-    "server/SPEC.md"
+    "docs/SPEC.md"
   ],
   "retired_terms": [],
   "require_review": true,

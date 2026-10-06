@@ -4,7 +4,7 @@
 
 - The Linear tracker at https://linear.app/activi/project/lena-1333951b31fb is authoritative for assignment and work status. Its title Lena was rejected on 5 October 2026 and is not the product name.
 - `docs/project.md` is authoritative for current repository and deployment facts.
-- `server/SPEC.md` is authoritative for approved product scope.
+- `docs/SPEC.md` is authoritative for approved product scope.
 - `docs/open-work.md` mirrors the Linear work breakdown for local readers.
 - Dated audits are evidence records; they are not silently rewritten into
   current implementation claims.
