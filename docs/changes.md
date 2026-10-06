@@ -1,5 +1,15 @@
 # Documentation change evidence
 
+## 7 October 2026 — The project is published on GitHub
+
+**Trigger:** The user supplied the empty repository https://github.com/dsactivi-2/JSI_MCP and asked for the whole project to be pushed, with a README.
+
+**Before:** The local repository had nine commits and no Git remote. The README did not name this GitHub repository or the live server address.
+
+**After:** `main` and `codex/cloud-crm-baseline` both point at the local history. The README names the repository and https://calm-forge-hk9rc.run.mcp-use.com/mcp. No secret file was added. The live server was not deployed again.
+
+**Checked:** `gh repo view` showed the repository empty and public before the push, then `main` after it. Not checked: a fresh clone on another machine.
+
 ## 7 October 2026 — Codex uses the new CRM server
 
 **Trigger:** The user asked to remove the old Codex CRM connections and install the new server.

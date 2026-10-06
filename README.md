@@ -1,5 +1,9 @@
 # Cloud CRM MCP project
 
+This is the GitHub repository [dsactivi-2/JSI_MCP](https://github.com/dsactivi-2/JSI_MCP).
+The hosted read server is [https://calm-forge-hk9rc.run.mcp-use.com/mcp](https://calm-forge-hk9rc.run.mcp-use.com/mcp).
+Database passwords, tokens, and `node_modules` are not included.
+
 This repository contains the existing read-only `candidate-search` plugin, a
 downloaded Cloudflare Worker snapshot, a TypeScript MCP server workspace, and
 the approved plan for the broader Cloud CRM MCP application.
