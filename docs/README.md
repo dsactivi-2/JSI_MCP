@@ -16,6 +16,7 @@ This directory is the current documentation entry point for the Cloud CRM MCP pr
 | Documentation coverage | [coverage.json](coverage.json) | Machine-readable current-state evidence |
 | Change evidence | [changes.md](changes.md) | Current |
 | External sources | [sources.md](sources.md) | Current |
+| Agent instructions | [agents/domain.md](agents/domain.md), [agents/issue-tracker.md](agents/issue-tracker.md), [agents/triage-labels.md](agents/triage-labels.md) | Current on 7 October 2026. Linear issue status was not rechecked that day |
 | Old Worker audits and the earlier plan | `/Users/activi/Downloads/JSI_MCP-archiv/snapshot/docs` | Removed from this repository on 7 October 2026. Local archive commit bc02ddb. Not on GitHub HEAD. |
 
 ## Reading order

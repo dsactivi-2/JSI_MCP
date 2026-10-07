@@ -1,5 +1,15 @@
 # Documentation change evidence
 
+## 7 October 2026 — Agent instructions now name this server
+
+**Trigger:** The user noticed that `docs/agents/` was still two days old after the other docs had been updated.
+
+**Before:** `docs/agents/domain.md` told agents to read `GLOSSARY.md` and `docs/adr/`, which this repository does not have. The issue-tracker and triage files did not say that the 7 October server facts were local, or that Linear had not been rechecked.
+
+**After:** The three agent files point at `docs/project.md`, the current decisions, `cloud-crm-mcp`, and the existing Linear project. They say not to invent a glossary, an ADR directory, a replacement for the title Lena, or a sixth triage label. No Linear issue was changed.
+
+**Checked:** The documentation check in `docs/setup.md` after this edit. Not checked: the live Linear workspace on 7 October 2026.
+
 ## 7 October 2026 — Server package files match the current server
 
 **Trigger:** The user saw that `index.ts`, the tests, both README files, `tsconfig.json`, and the ignore files were older than the latest docs, and that `mcp-env.d.ts` still looked like the untouched scaffold.

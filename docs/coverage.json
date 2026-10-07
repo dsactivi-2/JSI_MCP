@@ -58,8 +58,8 @@
         "docs/open-work.md",
         "docs/agents/issue-tracker.md"
       ],
-      "evidence": "The Linear tracker is authoritative and ACT-140 through ACT-154 are mapped. Its title Lena was rejected on 5 October 2026.",
-      "checked_at": "2026-10-05"
+      "evidence": "The Linear tracker is authoritative and ACT-140 through ACT-154 are mapped in docs/open-work.md. Its title Lena was rejected on 5 October 2026. The 15 issues were last seen in Backlog on 5 October 2026 and were not rechecked on 7 October 2026. docs/agents now points at the current server instead of the generic glossary layout.",
+      "checked_at": "2026-10-07"
     },
     {
       "topic": "decisions",

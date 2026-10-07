@@ -1,33 +1,30 @@
-# Domain Docs
+# Domain docs
 
-How the engineering skills should consume this repository's domain documentation when exploring the codebase.
+Status date: 7 October 2026.
 
-## Before exploring, read these
+Read the current domain before changing this repository. This is one product, not a set of separate contexts.
 
-- **`GLOSSARY.md`** at the repository root.
-- **`docs/adr/`**: read ADRs that affect the area about to be changed.
+## Read these first
 
-If these files do not exist, proceed silently. Do not flag their absence or suggest creating them upfront. The `domain-modeling` skill creates them lazily when terms or decisions are resolved.
+- `docs/project.md` for the running server, the repository map, and the boundaries.
+- `docs/memory.md` before starting a new chat.
+- `docs/open-work.md` for the phases and the issue map.
+- `docs/SPEC.md` for the approved scope. A named module is not proof that it is built.
+- `cloud-crm-mcp/skills/crm-kandidatensuche/` for the search rules the server serves.
 
-## File structure
+## What this repository does not have
 
-This repository uses a single-context layout:
+There is no `GLOSSARY.md` and no `docs/adr/` directory. Do not create either only because a generic skill expects that layout. The decisions already have IDs in the active docs: `DEC-2026-10-06-mcp-use`, `DEC-2026-10-06-same-database`, and `DEC-2026-10-06-phased-scope`.
 
-```text
-/
-├── GLOSSARY.md
-├── docs/adr/
-│   ├── 0001-example-decision.md
-│   └── 0002-another-decision.md
-└── ...
-```
+If a term is missing, name the gap. Do not invent a second name for a decision that is already written.
 
-## Use the glossary's vocabulary
+## Names to keep
 
-When output names a domain concept—in an issue title, refactor proposal, hypothesis, or test name—use the term defined in `GLOSSARY.md`. Do not drift to synonyms the glossary explicitly avoids.
+- Product: Cloud CRM MCP.
+- Server package: `cloud-crm-mcp`, version 0.1.0.
+- Tracker: https://linear.app/activi/project/lena-1333951b31fb. The title Lena was rejected on 5 October 2026. It is not the product name. Do not invent a replacement.
+- `candidate-search` and the old Worker are archive and evidence. They are not this server.
 
-If a required concept is absent, reconsider whether the term belongs to the project or note the gap for the `domain-modeling` skill.
+## Conflicts
 
-## Flag ADR conflicts
-
-If proposed work contradicts an existing ADR, surface the conflict explicitly instead of silently overriding the decision.
+If proposed work contradicts `docs/project.md` or `docs/open-work.md`, stop and name the conflict. Do not override it silently.

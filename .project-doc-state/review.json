@@ -1,8 +1,8 @@
 {
   "version": "1.3.0",
   "reviewer": "Codex",
-  "summary": "Rechecked after restoring ignore rules for local leftovers .serena, .docx-work, .validation-deps, and Python cache. Those folders stay on disk and out of Git. Server source, package metadata, tsconfig, READMEs, and active docs match the 7 October source change. npm test 17 passed. typecheck passed. mcp-env.d.ts unchanged.",
-  "reviewed_at": "2026-10-07T00:19:06.875529+00:00",
+  "summary": "Updated docs/agents on 7 October 2026. domain.md no longer requires the missing glossary and ADR layout. issue-tracker.md keeps the Lena project and says the 15 Backlog issues were not rechecked. triage-labels.md keeps the five labels and forbids substitutes. No Linear write.",
+  "reviewed_at": "2026-10-07T00:21:35.755255+00:00",
   "snapshot": {
     "files": {
       ".DS_Store": "358796e4c07ae4a8550c3f1e4af611cb446e1fc099d19ae54e1d2f7ab5c352e8",
@@ -74,10 +74,10 @@
       "cloud-crm-mcp/test/evals.test.ts": "f9fa6dd75059c4c0e612e3e5fba272c1bcf313a8879936bf80b93e86edff7efc",
       "cloud-crm-mcp/test/guides.test.ts": "266e0bd7f33f09c9a976f842864100552bd2a1da475305b8327d71a2ee7c7e00",
       "cloud-crm-mcp/test/sql.test.ts": "ce398316155c8ab51e3abe6725a2ed8f77b58ee67052403041a28e4ba881f2ab",
-      "docs/README.md": "2224869ff17a8655dc62cf55f7074f1e34a1a3dc33cfa4947f4473ea80a17ac3",
+      "docs/README.md": "14428dd3a2603b208c7794144dc29f27855eade5c4df251b81731641a3bc4177",
       "docs/SPEC.md": "033f54019d15b45590b58c85616a8dc2519c799441318323d9d7b4170d637bcb",
-      "docs/changes.md": "8997fbd4183aefeb265bd1a54b866cef33f4d9d2d683f2e46ff26e8b4e1fec13",
-      "docs/coverage.json": "15f7565713acd113d285329ff8963688835599097f7ec954e0b631533f3b2eed",
+      "docs/changes.md": "c46040b2d07db8c5c1cc2d4727652705db2af57765fed4274855f3435d6bb613",
+      "docs/coverage.json": "8f7d5404efb5ffcb45fb4809c82feef77980d327359400ac56b41558ee161be9",
       "docs/doc-check.json": "85f3836c46f5d3b158bf271891214deb49d901cc532085cff4d06ba60a0682d2",
       "docs/documentation-policy.md": "70ca4b1e577e6d290d3063591ad4cf28f3af83276638d309010dc27e26622cd3",
       "docs/memory.md": "c357ca881089b57b3b23c9c198045447b9a4826d186f6e421369c874adc1a3ff",
@@ -85,9 +85,9 @@
       "docs/project.md": "987d5e5118d51eb114c340c04d6132e3ad67d8dded8751279801e35479045579",
       "docs/setup.md": "0a57f0b89e8173289310f5b6709605ce7455ad64e8ad98aaff9c10089ce72a18",
       "docs/sources.md": "5e1c794779ae47b1347cf841e71d8ddf96699ff46c85857e3f498c4245ac1f43",
-      "docs/agents/domain.md": "35d9c6992d88134684057f77c1151514e29e1eb4e3d9915bb0c3dae3a8bcb8e6",
-      "docs/agents/issue-tracker.md": "1ba23a071fcec73e800502d1c0e71279a12a62ca0dcfa79ea6a1c23388a6b9fe",
-      "docs/agents/triage-labels.md": "f0d2062ca87ff80199fd80b49dfdbc6198e11e94a01998315c878db528bfe67e",
+      "docs/agents/domain.md": "51325df38dae4d9500a201d6603800bc5872f1b7291bde8abfcbf6c54e5f9d8f",
+      "docs/agents/issue-tracker.md": "57b8ad1f86d50dbfeb15321875d6624af643bc745682216c6998e66d323164b8",
+      "docs/agents/triage-labels.md": "8c436307ee03a2b7f8900e479269e8873a80ddd06682af032ee7aa8a406902c9",
       "server/.DS_Store": "cf2c2f2c75c9e12aa2234f4f102ecbf8e9670c391749a4878bbfef06d9918823"
     },
     "policy": {
