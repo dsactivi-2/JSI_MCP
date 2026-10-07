@@ -1,16 +1,25 @@
+# Secrets stay on the host. CRM_DATABASE_URL and tokens are not committed.
 .env
 .env.*
 !.env.example
+
+# Installed and generated files for the TypeScript server.
 node_modules/
 dist/
 coverage/
-.validation-deps/
+.mcp-use/
+.vite/
+*.tsbuildinfo
 *.log
+
+# Editor and system files.
 .DS_Store
 .idea/
 .vscode/
+
+# Local leftovers from the old workspace. Not part of the server.
+.serena/
 .docx-work/
-.serena/cache/
-.serena/project.local.yml
+.validation-deps/
 __pycache__/
 *.pyc

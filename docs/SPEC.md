@@ -2,7 +2,7 @@
 
 ## Status
 
-Expanded planning scope approved on 5 October 2026. A local phase-1 workshop exists under server/src and is covered by local tests. It is not the hosted server. The hosted server is cloud-crm-mcp on Manufact at https://calm-forge-hk9rc.run.mcp-use.com/mcp, deployment c0be2dd3, checked running on 6 October 2026 at 20:52 UTC. It is not connected to MySQL. Decision DEC-2026-10-06-mcp-use selects mcp-use. Manufact is the temporary host. Decision DEC-2026-10-06-same-database means a new connection to the same existing MySQL database, not a second database. The Linear tracker is https://linear.app/activi/project/lena-1333951b31fb. Its title Lena was rejected on 5 October 2026 and is not the product name. The scope root is
+Expanded planning scope approved on 5 October 2026. The server source is `cloud-crm-mcp/`, package version 0.1.0. Manufact hosts https://calm-forge-hk9rc.run.mcp-use.com/mcp. The running deployment recorded on 6 October 2026 is `2a078755`. That deployment proved one count on the existing MySQL database. The source change on 7 October 2026, which adds the public address and the connection text, is not deployed. The old `server/` workshop is in the local archive, not in this repository. Decision DEC-2026-10-06-mcp-use selects mcp-use. Manufact is the temporary host. Decision DEC-2026-10-06-same-database means a new connection to the same existing MySQL database, not a second database. The Linear tracker is https://linear.app/activi/project/lena-1333951b31fb. Its title Lena was rejected on 5 October 2026 and is not the product name. The scope root is
 [ACT-140](https://linear.app/activi/issue/ACT-140/deliver-the-complete-cloud-crm-mcp-application-scope).
 
 ## Value Proposition
@@ -109,6 +109,8 @@ or an administrative query result. They do not silently trigger writes, exports,
 bulk actions, ranking, rejection, biometric processing, or external evaluation.
 
 ## Product Context
+
+The list below is the 5 October 2026 planning baseline. It is not the running server. The running server is `cloud-crm-mcp` on Manufact. Current facts are in `docs/project.md`.
 
 - **Plugin:** `candidate-search`, version `0.1.0-beta.2`.
 - **MCP endpoint:**

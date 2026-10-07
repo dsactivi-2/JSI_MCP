@@ -48,16 +48,16 @@ The old Worker https://crm-pipedrive-worker.6f484zn9bd.workers.dev/mcp stays unt
 
 - No proven read of a candidate, company, or order row through the new server.
 - WorkOS roles are not checked in the tool handlers. Discovery does not advertise `crm:read`. `crm_query` asks for `sql:read` and can return HTTP 403.
-- The skill is on the server as `SKILL.md`. `agents/openai.yaml` is only the OpenAI hint. Clients do not install it on connect. Grok did not call `skills/list`. Do not add a separate file per agent unless a host requires one.
+- The skill is on the server as `SKILL.md`. `agents/openai.yaml` is only the OpenAI hint. Clients do not install it on connect. Grok did not call `skills/list`. Do not add a separate file per agent unless a host requires one. On 7 October 2026 the source gained `websiteUrl` and a short connection `instructions` text. That change is not deployed.
 - Local Codex `crm-remote` points at the new URL and is set to `enabled = false`.
 - The three stopped chats never delivered their handovers. Do not invent their missing work.
-- The repository was not cleaned up. Publishing it did not update the running server.
+- The repository tip is the new server only. The old files are in the local archive, commit `bc02ddb`. Publishing the repository did not update the running server.
 - Linear was not updated in this documentation pass. Its 15 issues were last confirmed in Backlog. That live check was not repeated on 7 October 2026.
 
 ## Next chat
 
 1. Read the active docs above before editing.
 2. Do not deploy. Do not restore the archived old files unless the user asks.
-3. The useful server change, if the user asks, is the short connection text that tells every client to ignore old local skill files and read this server's skill.
+3. The short connection text is in the source and covered by a local test. It is not on deployment `2a078755`. Do not deploy unless the user asks.
 4. A real candidate read is still the missing proof. Do not print personal data into the repository.
 5. Ask for a Linear title before renaming the tracker.

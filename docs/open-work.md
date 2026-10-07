@@ -31,7 +31,7 @@ Checked on 6 October 2026 at 20:52 UTC: https://calm-forge-hk9rc.run.mcp-use.com
 
 Decision DEC-2026-10-06-same-database: the new server reads the same existing MySQL database through a new connection. It does not get a second database. The old Worker, its host, and its Hyperdrive id stay untouched. cloud-crm-mcp refuses that old host and that old Hyperdrive id. The phase-1 read tools are registered. The plugin skill and both search guides are served as guide version 1.2.0, without the old Worker address. CRM_DATABASE_URL is set. Deployment e97b45da proved one count: 122004 candidates, 117558 active, 1223 companies, and 238 orders. Running deployment 2a078755 has the same client.
 
-The whole function list remains in scope. The first online server is the read server. Language filtering, follow-up pages, profession variants, and the search guide are now in the server code. The database is attached. Read tools use it when CRM_DATABASE_URL is present. Phases 2 through 5 stay included and stay behind their existing gates.
+The whole function list remains in scope. The first online server is the read server. Language filtering, follow-up pages, profession variants, and the search guide are now in the server code. The database is attached. Read tools use it when CRM_DATABASE_URL is present. On 7 October 2026 the source also reports its public address and a short connection text. Deployment 2a078755 does not serve that text yet. Phases 2 through 5 stay included and stay behind their existing gates.
 
 Already online and connected to MySQL:
 

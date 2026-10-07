@@ -4,11 +4,11 @@
   "engines": {
     "node": ">=22.22.2"
   },
-  "version": "1.0.0",
-  "description": "Read-only Cloud CRM MCP server. Phase 1 tools, skill, and search guides are registered. MySQL connects with TLS when CRM_DATABASE_URL is set.",
-  "author": "mcp-use",
+  "version": "0.1.0",
+  "description": "Read-only Cloud CRM MCP server. Phase 1 tools, one shared skill, and search guides. MySQL connects with TLS when CRM_DATABASE_URL is set.",
+  "author": "dsactivi-2",
   "license": "MIT",
-  "homepage": "https://github.com/mcp-use/mcp-use",
+  "homepage": "https://github.com/dsactivi-2/JSI_MCP",
   "keywords": [
     "mcp",
     "mcp-server",

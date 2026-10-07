@@ -1,5 +1,15 @@
 # Documentation change evidence
 
+## 7 October 2026 — Server package files match the current server
+
+**Trigger:** The user saw that `index.ts`, the tests, both README files, `tsconfig.json`, and the ignore files were older than the latest docs, and that `mcp-env.d.ts` still looked like the untouched scaffold.
+
+**Before:** `cloud-crm-mcp/README.md` was the mcp-use starter text. `package.json` said version 1.0.0, author mcp-use, and pointed at the mcp-use GitHub page, while the server told clients it was 0.1.0. `tsconfig.json` still included browser views and a missing `server.ts`. The root ignore file still named Serena, Python, and the old document workspace. The server did not report a website address or connection instructions. `docs/project.md` still told people to validate the archived `candidate-search` package. `docs/SPEC.md` still said the hosted server was not connected to MySQL.
+
+**After:** The server source reports `https://calm-forge-hk9rc.run.mcp-use.com` and a short instruction to ignore old local skill files and read `skill://crm-kandidatensuche/SKILL.md`. Package version, author, and homepage match this repository. The TypeScript config checks the server and its tests, not missing view files. Ignore files match this repository. `mcp-env.d.ts` was left as the file `mcp-use typecheck` generates; editing it by hand would be overwritten. Active docs now say this source change is not on deployment `2a078755`.
+
+**Checked:** Local `npm test` and `npm run typecheck` in `cloud-crm-mcp/`, plus the documentation check named in `docs/setup.md`. Not checked: a new deployment, a live initialize response, or a candidate row.
+
 ## 7 October 2026 — Old files left this repository and stayed on this Mac
 
 **Trigger:** The user asked to take out every file that does not belong to the new server, without deleting it, and to keep those files off the GitHub copy.

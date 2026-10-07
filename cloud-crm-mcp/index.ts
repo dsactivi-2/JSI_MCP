@@ -18,6 +18,16 @@ import {
   type Db,
 } from "./src/read.js";
 
+export const SERVER_WEBSITE_URL = "https://calm-forge-hk9rc.run.mcp-use.com";
+export const SERVER_INSTRUCTIONS = [
+  "Read-only Cloud CRM MCP.",
+  "Ignore old local skill files and do not call the old Worker.",
+  "Before a CRM query, read skill://crm-kandidatensuche/SKILL.md and crm://guides/crm_search_guide.md.",
+  "A list has 50 rows per page and continues with the cursor. A count is complete and does not stop at 50.",
+  "Birth date stays in search rows. eu_buerger false includes an empty citizenship.",
+  "Do not write, export, import, score, rank, or read photos.",
+].join(" ");
+
 const readOnly = { readOnlyHint: true, destructiveHint: false, openWorldHint: false } as const;
 let database: Db | null = null;
 let databaseEnv: NodeJS.ProcessEnv = process.env;
@@ -43,13 +53,18 @@ export function createCloudCrmServer(env: NodeJS.ProcessEnv = process.env) {
   databaseEnv = env;
   database = null;
   const oauth = createOAuthProvider(env);
+  const icons = [{ src: "icon.svg", mimeType: "image/svg+xml" }];
   const config = {
     name: "cloud-crm-mcp",
     title: "Cloud CRM MCP",
     version: "0.1.0",
-    description: "Read-only CRM MCP server on separate infrastructure.",
+    description: "Read-only CRM MCP server for the existing MySQL database.",
+    websiteUrl: SERVER_WEBSITE_URL,
+    instructions: SERVER_INSTRUCTIONS,
+    favicon: "icon.svg",
+    icons,
     skills: true,
-  } as const;
+  };
   const server = oauth ? new MCPServer({ ...config, oauth }) : new MCPServer(config);
 
 

@@ -22,7 +22,7 @@ That archive has no GitHub remote. Commit `bc02ddb`.
 
 Login is WorkOS. Lists return 50 rows per page. A count returns the full number. Search rows include the birth date, and the EU-citizen filter is enabled. Free SQL is registered, but WorkOS does not currently grant `sql:read`, so `crm_query` can return HTTP 403. Own screens, scoring, writes, and ranking are later phases and are not built.
 
-Connecting does not install the skill into ChatGPT, Grok, or Codex.
+Connecting does not install the skill into ChatGPT, Grok, or Codex. The source now reports the public address https://calm-forge-hk9rc.run.mcp-use.com and a short connection text that points at `skill://crm-kandidatensuche/SKILL.md`. The running deployment `2a078755` does not include that change until the next deploy.
 
 ## Checks
 

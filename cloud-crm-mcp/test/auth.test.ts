@@ -15,7 +15,7 @@ registerHooks({
 import assert from "node:assert/strict";
 import test from "node:test";
 
-const { createCloudCrmServer } = await import("../index.ts");
+const { createCloudCrmServer, SERVER_INSTRUCTIONS, SERVER_WEBSITE_URL } = await import("../index.ts");
 
 const legacyEnv = { CRM_MCP_SERVER_TOKEN: "test-token" };
 const oauthEnv = {
@@ -70,6 +70,34 @@ test("OAuth nennt den Anmeldewunsch und laesst den alten Token weiter", async ()
 
 test("halbes OAuth startet nicht", () => {
   assert.throws(() => createCloudCrmServer({ OAUTH_ISSUER: "https://login.example.com/" }), /OAUTH_AUTHORIZATION_ENDPOINT fehlt/);
+});
+
+test("die Verbindung nennt die oeffentliche Adresse und die aktuelle Anleitung", async () => {
+  const server = createCloudCrmServer(legacyEnv);
+  assert.equal(server.branding.websiteUrl, SERVER_WEBSITE_URL);
+  assert.equal(server.branding.websiteUrl, "https://calm-forge-hk9rc.run.mcp-use.com");
+  assert.equal(SERVER_INSTRUCTIONS.includes("skill://crm-kandidatensuche/SKILL.md"), true);
+  assert.match(SERVER_INSTRUCTIONS, /Ignore old local skill files/);
+  assert.match(SERVER_INSTRUCTIONS, /50 rows per page/);
+  assert.equal(server.branding.favicon, "icon.svg");
+  const started = await server.fetch(mcp("/mcp", {
+    method: "POST",
+    headers: {
+      authorization: "Bearer test-token",
+      accept: "application/json, text/event-stream",
+      "content-type": "application/json",
+    },
+    body: JSON.stringify({
+      jsonrpc: "2.0",
+      id: 1,
+      method: "initialize",
+      params: { protocolVersion: "2025-06-18", capabilities: {}, clientInfo: { name: "test", version: "0" } },
+    }),
+  }));
+  assert.equal(started.status, 200);
+  const body = await started.text();
+  assert.match(body, /calm-forge-hk9rc.run.mcp-use.com/);
+  assert.match(body, /Ignore old local skill files/);
 });
 
 test("WorkOS-Adresse schaltet die Anmeldung ohne einzelne Endpunkte ein", async () => {

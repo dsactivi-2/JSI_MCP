@@ -1,3 +1,6 @@
+# Cloud CRM MCP package. Generated output and host secrets stay out of Git.
+# The Aiven project CA is source text in src/aiven-ca.ts, not a .pem file.
+
 # Dependencies
 node_modules/
 .pnpm-store/
@@ -16,8 +19,9 @@ coverage/
 # Linting
 .eslintcache
 
-# Environment
+# Environment. CRM_DATABASE_URL includes the database password.
 .env
+.env.*
 .env.local
 .env.development.local
 .env.test.local
@@ -41,4 +45,3 @@ Thumbs.db
 *.swp
 *.swo
 *~
-

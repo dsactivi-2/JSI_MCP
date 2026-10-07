@@ -4,14 +4,11 @@ Status date: 7 October 2026
 
 ## Project identity
 
-This repository is the Cloud CRM MCP project in the folder MCP Plugin 2. The installable package remains candidate-search. Work is tracked in Linear at https://linear.app/activi/project/lena-1333951b31fb, separate from the older Candidate Search project. Scope root: ACT-140. The Linear title Lena was rejected by the user on 5 October 2026. It remains only as the current tracker title until a replacement name is given. Do not invent another name.
-
-The current installable plugin remains named `candidate-search`; renaming the
-package or public product is a separate decision and has not been implemented.
+This repository is the Cloud CRM MCP project in the folder MCP Plugin 2. The server package is `cloud-crm-mcp`, version 0.1.0. The old installable package `candidate-search` is not in this repository. Work is tracked in Linear at https://linear.app/activi/project/lena-1333951b31fb, separate from the older Candidate Search project. Scope root: ACT-140. The Linear title Lena was rejected by the user on 5 October 2026. It remains only as the current tracker title until a replacement name is given. Do not invent another name.
 
 ## Product
 
-The implemented server is `cloud-crm-mcp/`. It is TypeScript, built with mcp-use, and hosted on Manufact at https://calm-forge-hk9rc.run.mcp-use.com/mcp. It reads the existing MySQL database. The `candidate-search` package still carries the `crm-kandidatensuche` skill. The old Cloudflare Worker remains online and must not be changed. It is not the server this repository deploys.
+The implemented server is `cloud-crm-mcp/`. It is TypeScript, built with mcp-use, and hosted on Manufact at https://calm-forge-hk9rc.run.mcp-use.com/mcp. It reads the existing MySQL database. The skill `crm-kandidatensuche` is in that same package. The old Cloudflare Worker remains online and must not be changed. It is not the server this repository deploys.
 
 The approved planning scope is broader. On 6 October 2026 the user included eight points on the new server and split the build into phases. Phase 1 is the read server: birth date in the search list, the EU-citizen filter, free read-only SQL, and list and describe tables, together with the candidate, company, order, statistics, and profession-report reads. Phase 2 is own screens. Phase 3 is a later scoring step. The engine is not chosen: the user is still checking TypeSafe and a Cloudflare model they called Clef. That product name is not verified here. Phase 4 is writes, export, and import. Phase 5 is ranking, photos, and biometrics. Inclusion does not mean implemented, verified, or cleared for production data. `docs/SPEC.md` is the product specification and `docs/open-work.md` is the current roadmap.
 
@@ -43,7 +40,7 @@ cloud-crm-mcp on Manufact, TypeScript
 existing MySQL database
 ```
 
-Connecting does not install the skill. The shared instructions are `cloud-crm-mcp/skills/crm-kandidatensuche/SKILL.md`. `agents/openai.yaml` is only an OpenAI hint. A client that never calls `skills/list` does not receive that text. On 7 October 2026 Grok read two old local files instead.
+Connecting does not install the skill. The shared instructions are `cloud-crm-mcp/skills/crm-kandidatensuche/SKILL.md`. `agents/openai.yaml` is only an OpenAI hint. A client that never calls `skills/list` does not receive that file. On 7 October 2026 the source started reporting `websiteUrl` https://calm-forge-hk9rc.run.mcp-use.com and a short `instructions` text that tells the client to ignore old local skill files and read `skill://crm-kandidatensuche/SKILL.md`. Deployment `2a078755` does not serve that text until the next deploy. On 7 October 2026 Grok read two old local files instead.
 
 GitHub publishes this repository at https://github.com/dsactivi-2/JSI_MCP. The repository is public. The current branch tip is the TypeScript server under cloud-crm-mcp/. The 3.8 MB Worker bundle and the general coding skills were removed from this tip after a local copy. There are no telephone agents in this repository.
 
@@ -68,15 +65,14 @@ WorkOS is the login for the new server. Deployment 2a078755 publishes discovery 
 
 ## Current verification
 
-Run the local package checks from the repository root:
+Run the local server checks from `cloud-crm-mcp/`:
 
-```powershell
-python .\scripts\validate_package.py .\candidate-search
-python "$env:USERPROFILE\.codex\skills\.system\plugin-creator\scripts\validate_plugin.py" .\candidate-search
-python "$env:USERPROFILE\.codex\skills\.system\skill-creator\scripts\quick_validate.py" .\candidate-search\skills\crm-kandidatensuche
+```bash
+npm test
+npm run typecheck
 ```
 
-Use MCP Inspector against an authorized isolated deployment for initialization, schemas, authorization, invalid input, and server-side evaluation scenarios. The presence of `cloud-crm-mcp/test/evals.json` records expected behavior; it is not evidence that every scenario has been executed.
+These checks do not read a candidate row and do not deploy. Use the Manufact Inspector against an authorized session for initialization, schemas, authorization, and invalid input. The presence of `cloud-crm-mcp/test/evals.json` records expected behavior; it is not evidence that every scenario has been executed. The old `candidate-search` validators are not part of this repository.
 
 ## Open foundation gaps
 
